@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  cr_report_api:
+    environment:  
+      - ConnectionStrings__ApiClient
+
+  cr_scheduler:
+    environment:
+      - ConnectionStrings__Updater
+
+  cr_loader:
+    environment:
+      - RabbitSettings__HostName
+      - RabbitSettings__Port
+      - RabbitSettings__Login
+      - RabbitSettings__Password
+
+  cr_czbank_connector:
+    environment:
+      - RabbitSettings__HostName
+      - RabbitSettings__Port
+      - RabbitSettings__Login
+      - RabbitSettings__Password
+
+  cr_rabbitmq:
+    environment:
+      - ConnectionStrings__Updater
+
+  cr_postgres:
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_PORT
+
+  cr_pgadmin4:
+    environment:
+      - PGADMIN_DEFAULT_EMAIL
+      - PGADMIN_DEFAULT_PASSWORD

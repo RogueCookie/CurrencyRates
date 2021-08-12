@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CurrencyRates.Loader": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

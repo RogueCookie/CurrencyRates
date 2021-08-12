@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CurrencyRates.CzBank.Connector": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

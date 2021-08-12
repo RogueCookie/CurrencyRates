@@ -1,0 +1,72 @@
+version: '3.4'
+
+networks:
+  cr: {}
+
+services:  
+  cr_report_api:
+    image: ${DOCKER_REGISTRY}/cr_report_api:${TAG}
+    build:
+      context: .
+      dockerfile: Services/CurrencyRates.Report.Api/Dockerfile
+    networks:
+      - cr
+    ports:
+      - 86:80
+
+  cr_scheduler:
+    image: ${DOCKER_REGISTRY}/cr_scheduler:${TAG}
+    build:
+      context: .
+      dockerfile: Services/CurrencyRates.Sheduler.Api/Dockerfile
+    networks:
+      - cr
+    ports:
+      - 84:80
+    depends_on:
+      - cr_rabbitmq
+   
+  cr_loader:
+    image: ${DOCKER_REGISTRY}/cr_loader:${TAG}
+    build:
+      context: .
+      dockerfile: Services/CurrencyRates.Loader/Dockerfile
+    networks:
+      - cr
+    restart: on-failure
+
+  cr_czbank_connector:
+    image: ${DOCKER_REGISTRY}/cr_czbank_connector:${TAG}
+    build:
+      context: .
+      dockerfile: Services/CurrencyRates.CzBank.Connector/Dockerfile
+    networks:
+      - cr
+    restart: on-failure
+    depends_on:
+      - cr_scheduler
+
+  cr_rabbitmq:
+    container_name: cr_rabbitmq_container
+    image: rabbitmq:3.8.11-management
+    networks:
+     - cr
+    ports:
+      - 87:15672
+    restart: on-failure
+
+  cr_postgres:
+    container_name: cr_postgres_container
+    image: postgres:13.1 
+    networks:
+     - cr
+    restart: on-failure
+
+  cr_pgadmin4:
+    container_name: cr_pgadmin4_container
+    image: dpage/pgadmin4:latest
+    networks:
+     - cr
+    ports:
+      - 8081:80
+    restart: on-failure

@@ -23,6 +23,10 @@ namespace CurrencyRates.Report.Api.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Dratuti
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {

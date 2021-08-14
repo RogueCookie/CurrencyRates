@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CurrencyRates.Report.Api</name>
+    </assembly>
+    <members>
+        <member name="M:CurrencyRates.Report.Api.Controllers.WeatherForecastController.Get">
+            <summary>
+            Dratuti
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CurrencyRates.Report.Api.Extensions.SwaggerExtension">
+            <summary>
+            Swagger set up. Implementation of Swagger settings
+            </summary>
+        </member>
+        <member name="M:CurrencyRates.Report.Api.Extensions.SwaggerExtension.RegisterSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Swagger set up. Implementation of Swagger settings
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="T:CurrencyRates.Report.Api.Extensions.SwaggerUiExtension">
+            <summary>
+            Add swagger in middleware
+            </summary>
+        </member>
+        <member name="M:CurrencyRates.Report.Api.Extensions.SwaggerUiExtension.RegisterSwaggerUi(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Register swagger UI. Enable middleware to serve generated Swagger as a JSON endpoint
+            </summary>
+            <param name="app"></param>
+        </member>
+    </members>
+</doc>

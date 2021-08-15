@@ -32,5 +32,12 @@
             </summary>
             <param name="app"></param>
         </member>
+        <member name="M:CurrencyRates.Scheduler.Api.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            Allow to read parameters appsettings.json when app starts and if .env have the same variable as in appsettings then they were
+            overwritten with parameters that are passed to .env file
+            This is how we configure the application without changing the upsets physically on the disk
+            </summary>
+        </member>
     </members>
 </doc>

@@ -18,7 +18,7 @@ services:
     image: ${DOCKER_REGISTRY}/cr_scheduler:${TAG}
     build:
       context: .
-      dockerfile: Services/CurrencyRates.Sheduler.Api/Dockerfile
+      dockerfile: Services/CurrencyRates.Scheduler.Api/Dockerfile
     networks:
       - cr
     ports:
@@ -52,7 +52,7 @@ services:
     networks:
      - cr
     ports:
-      - 87:15672
+      - 85:15672
     restart: on-failure
 
   cr_postgres:

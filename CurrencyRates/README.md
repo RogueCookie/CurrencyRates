@@ -34,4 +34,4 @@ Service for providing data to the user by currency. Implements API and logic for
 [Readme](./Services/CurrencyRates.Report.Api/Readme.md)
 #### Scheduler.Api 
 Service for creating scheduled tasks. Implements API and logic for adding / editing scheduled tasks 
-[Readme](./Services/CurrencyRates.Sheduler.Api/Readme.md)
+[Readme](./Services/CurrencyRates.Scheduler.Api/Readme.md)

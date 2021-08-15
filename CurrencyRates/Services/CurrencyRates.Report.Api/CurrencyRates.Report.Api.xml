@@ -4,7 +4,7 @@
         <name>CurrencyRates.Report.Api</name>
     </assembly>
     <members>
-        <member name="M:CurrencyRates.Report.Api.Controllers.WeatherForecastController.Get">
+        <member name="M:CurrencyRates.Report.Api.Controllers.ReportController.Get">
             <summary>
             Dratuti
             </summary>

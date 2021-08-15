@@ -14,17 +14,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		UpdatedArchitecture.drawio = UpdatedArchitecture.drawio
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRates.Sheduler.Api", "Services\CurrencyRates.Sheduler.Api\CurrencyRates.Sheduler.Api.csproj", "{CA0F5F60-DA06-4236-8AF5-B9F456984DF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRates.Report.Api", "Services\CurrencyRates.Report.Api\CurrencyRates.Report.Api.csproj", "{9B5CB5A3-4E52-483A-9F80-241B198CB712}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyRates.Report.Api", "Services\CurrencyRates.Report.Api\CurrencyRates.Report.Api.csproj", "{9B5CB5A3-4E52-483A-9F80-241B198CB712}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRates.CzBank.Connector", "Services\CurrencyRates.CzBank.Connector\CurrencyRates.CzBank.Connector.csproj", "{8A4816C4-062C-4BCD-B2E8-151E86AB2200}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyRates.CzBank.Connector", "Services\CurrencyRates.CzBank.Connector\CurrencyRates.CzBank.Connector.csproj", "{8A4816C4-062C-4BCD-B2E8-151E86AB2200}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyRates.Loader", "Services\CurrencyRates.Loader\CurrencyRates.Loader.csproj", "{7E148EF9-E9D2-4CB0-BC67-705669D3A88B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRates.Loader", "Services\CurrencyRates.Loader\CurrencyRates.Loader.csproj", "{7E148EF9-E9D2-4CB0-BC67-705669D3A88B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{2557B80D-A691-4B46-8917-6EBFFBF2D61A}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{3316A137-0516-4C16-864C-6800D23BF641}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyRates.Scheduler.Api", "Services\CurrencyRates.Scheduler.Api\CurrencyRates.Scheduler.Api.csproj", "{F0B98AD1-FC1B-4921-A664-9D0304CC7734}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,10 +32,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CA0F5F60-DA06-4236-8AF5-B9F456984DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA0F5F60-DA06-4236-8AF5-B9F456984DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA0F5F60-DA06-4236-8AF5-B9F456984DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA0F5F60-DA06-4236-8AF5-B9F456984DF0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B5CB5A3-4E52-483A-9F80-241B198CB712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9B5CB5A3-4E52-483A-9F80-241B198CB712}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B5CB5A3-4E52-483A-9F80-241B198CB712}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,16 +48,20 @@ Global
 		{3316A137-0516-4C16-864C-6800D23BF641}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3316A137-0516-4C16-864C-6800D23BF641}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3316A137-0516-4C16-864C-6800D23BF641}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0B98AD1-FC1B-4921-A664-9D0304CC7734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0B98AD1-FC1B-4921-A664-9D0304CC7734}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0B98AD1-FC1B-4921-A664-9D0304CC7734}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0B98AD1-FC1B-4921-A664-9D0304CC7734}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{CA0F5F60-DA06-4236-8AF5-B9F456984DF0} = {AAC537BD-08CC-4F63-829F-C390F355C58E}
 		{9B5CB5A3-4E52-483A-9F80-241B198CB712} = {AAC537BD-08CC-4F63-829F-C390F355C58E}
 		{8A4816C4-062C-4BCD-B2E8-151E86AB2200} = {AAC537BD-08CC-4F63-829F-C390F355C58E}
 		{7E148EF9-E9D2-4CB0-BC67-705669D3A88B} = {AAC537BD-08CC-4F63-829F-C390F355C58E}
 		{2557B80D-A691-4B46-8917-6EBFFBF2D61A} = {250BC2EE-89C8-489B-ACEB-6739ED107B57}
+		{F0B98AD1-FC1B-4921-A664-9D0304CC7734} = {AAC537BD-08CC-4F63-829F-C390F355C58E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F6361CFB-CE64-44C2-98CA-B8378C5255FA}

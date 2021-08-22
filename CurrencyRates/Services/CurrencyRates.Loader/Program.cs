@@ -25,7 +25,7 @@ namespace CurrencyRates.Loader
                     services.Configure<RabbitSettings>(_configuration.GetSection("RabbitSettings"));
                     services.AddSingleton<RabbitService>();
 
-                    // to create the serilog logger, based on the configuration provided in appsettings.json
+                    // Configure serilog. to create the serilog logger, based on the configuration provided in appsettings.json
                     // provides a fluent interface for building a logging pipeline
                     var logger = new LoggerConfiguration()
                         .Enrich.FromLogContext()
@@ -45,22 +45,8 @@ namespace CurrencyRates.Loader
 
             await host.RunAsync((serviceProvider) =>
             {
-                var baseInit = _configuration.GetValue<bool?>("BaseInit");
-                Log.Information($"Base Init - {baseInit}");
-                if (baseInit.HasValue && baseInit.Value)
-                {
-                    try
-                    {
-                        //var dbInit = serviceProvider.GetRequiredService<DbInitializator>();
-                        //dbInit.Initialize().GetAwaiter().GetResult();
-                    }
-                    catch (Exception exception)
-                    {
-                        Log.Error(exception.Message);
-                    }
-                }
-                //var eventBus = serviceProvider.GetRequiredService<RabbitMQClient>();
-                //eventBus.Start();
+                var eventBus = serviceProvider.GetRequiredService<RabbitService>();
+                eventBus.Start();
             });
         }
     }

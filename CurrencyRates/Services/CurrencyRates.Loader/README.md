@@ -4,7 +4,7 @@ Service collects data from different suppliers and converts them to the required
 
 ### Services description:
 #### RabbitService
-Rabbit service allows to connect to a rabbit service deployed in a docker container and send a message through a specific exchanger to a named queue  
+Rabbit service allows to connect to a rabbit service deployed in a docker container and read (get) a message from particular named queue  
 The service accepts parameters in the form of a logger and settings described below 
 
 ### Parameter description:

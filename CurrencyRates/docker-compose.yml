@@ -68,5 +68,5 @@ services:
     networks:
      - cr
     ports:
-      - 8081:80
+      - 8086:80
     restart: on-failure

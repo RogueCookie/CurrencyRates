@@ -7,7 +7,7 @@ services:
 
   cr_scheduler:
     environment:
-      - ConnectionStrings__Updater
+      - ConnectionStrings__SchedulerDbConnection
 
   cr_loader:
     environment:

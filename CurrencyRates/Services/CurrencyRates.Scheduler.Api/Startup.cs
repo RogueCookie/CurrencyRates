@@ -68,7 +68,7 @@ namespace CurrencyRates.Scheduler.Api
                 Authorization = new List<IDashboardAuthorizationFilter>() { }
             });
            
-            backgroundJobClient.Enqueue(() => Console.WriteLine("Hello, how are you"));
+            //backgroundJobClient.Enqueue(() => Console.WriteLine("Hello, how are you"));
 
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

@@ -10,7 +10,6 @@ namespace CurrencyRates.Scheduler.Api.MediatR.Commands
 {
     public class AddNewJob : CommandModel, IRequest
     {
-
     }
 
     public class AddNewJobHandler :IRequestHandler<AddNewJob>

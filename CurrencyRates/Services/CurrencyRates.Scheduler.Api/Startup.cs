@@ -12,6 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Net;
+using System.Reflection;
+using CurrencyRates.Scheduler.Api.Models;
+using CurrencyRates.Scheduler.Api.Services;
+using MediatR;
 
 namespace CurrencyRates.Scheduler.Api
 {
@@ -29,12 +33,16 @@ namespace CurrencyRates.Scheduler.Api
         {
             services.AddControllers();
             services.RegisterSwagger();
-            var אשש = _configuration.GetConnectionString("SchedulerDbConnection");
+
             services.AddHangfire(configuration => configuration
                 .UsePostgreSqlStorage(_configuration.GetConnectionString("SchedulerDbConnection")));
 
             services.AddHangfireServer();
             services.AddMvc();
+
+            services.Configure<RabbitSettings>(_configuration.GetSection("RabbitSettings"));
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddHostedService<RabbitService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

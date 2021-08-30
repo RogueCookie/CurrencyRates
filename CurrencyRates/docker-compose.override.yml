@@ -8,6 +8,10 @@ services:
   cr_scheduler:
     environment:
       - ConnectionStrings__SchedulerDbConnection
+      - RabbitSettings__HostName
+      - RabbitSettings__Port
+      - RabbitSettings__Login
+      - RabbitSettings__Password
 
   cr_loader:
     environment:

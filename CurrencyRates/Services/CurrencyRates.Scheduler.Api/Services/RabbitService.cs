@@ -6,7 +6,6 @@ using CurrencyRates.Scheduler.Api.Enums;
 using CurrencyRates.Scheduler.Api.MediatR.Commands;
 using CurrencyRates.Scheduler.Api.MediatrR.Models;
 using CurrencyRates.Scheduler.Api.Models;
-using Hangfire;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -20,9 +19,8 @@ namespace CurrencyRates.Scheduler.Api.Services
     /// <summary>
     /// Service for handle queues
     /// </summary>
-    public class RabbitCommandHandlerService : BackgroundService
+    public class RabbitService : BackgroundService
     {
-        private readonly IOptions<RabbitSettings> _options;
         private readonly string _hostname;
         private readonly int _port;
         private readonly string _username;
@@ -30,9 +28,9 @@ namespace CurrencyRates.Scheduler.Api.Services
         private readonly IMediator _mediator;
         private IConnection _connection;
         private IModel _channel;
-        private readonly ILogger<RabbitCommandHandlerService> _logger;
+        private readonly ILogger<RabbitService> _logger;
 
-        public RabbitCommandHandlerService(IOptions<RabbitSettings> options, IMediator mediator, ILogger<RabbitCommandHandlerService> logger)
+        public RabbitService(IOptions<RabbitSettings> options, IMediator mediator, ILogger<RabbitService> logger)
         {
             _hostname = options.Value.HostName;
             _port = options.Value.Port;
@@ -41,6 +39,7 @@ namespace CurrencyRates.Scheduler.Api.Services
             _mediator = mediator;
             _logger = logger;
         }
+
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             stoppingToken.ThrowIfCancellationRequested();

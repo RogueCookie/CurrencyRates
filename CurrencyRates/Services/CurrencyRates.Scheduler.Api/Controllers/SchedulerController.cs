@@ -1,4 +1,7 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Threading;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -24,7 +27,13 @@ namespace CurrencyRates.Scheduler.Api.Controllers
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         public ActionResult<string> Get()
         {
+            BackgroundJob.Enqueue(() => RunInBackground());
             return "meow";
+        }
+
+        public static void RunInBackground()
+        {
+            Console.WriteLine($"good job,val from scheduler by {Thread.CurrentThread.Name}");
         }
     }
 }

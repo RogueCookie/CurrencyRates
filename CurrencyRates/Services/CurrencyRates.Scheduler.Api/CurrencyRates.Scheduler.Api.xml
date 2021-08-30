@@ -10,6 +10,16 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:CurrencyRates.Scheduler.Api.Enums.Exchanges">
+            <summary>
+            Enumeration of all exchanges in the system
+            </summary>
+        </member>
+        <member name="T:CurrencyRates.Scheduler.Api.Enums.RoutingKey">
+            <summary>
+            Key used for binding queue with exchanges
+            </summary>
+        </member>
         <member name="T:CurrencyRates.Scheduler.Api.Extensions.SwaggerExtension">
             <summary>
             Swagger set up. Implementation of Swagger settings
@@ -32,11 +42,130 @@
             </summary>
             <param name="app"></param>
         </member>
+        <member name="M:CurrencyRates.Scheduler.Api.MediatR.Commands.SendCommandHandler.Handle(CurrencyRates.Scheduler.Api.MediatR.Commands.SendCommand,System.Threading.CancellationToken)">
+            <summary>
+            Send command by mediator
+            </summary>
+            <param name="request"></param>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="T:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel">
+            <summary>
+            Data which are used for register a new job in hangfire with particular settings for rabbitMq
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.Version">
+            <summary>
+            Version of created job
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.Command">
+            <summary>
+            Command for execution
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.JobName">
+            <summary>
+            Name of the job
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.IsEnabled">
+            <summary>
+            Whether job marked as enabled (active) or not
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.RoutingKey">
+            <summary>
+            Routing by which this job  will be communicated with exchange
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.CronScheduler">
+            <summary>
+            Cron settings (time period for execution)
+            </summary>
+        </member>
+        <member name="T:CurrencyRates.Scheduler.Api.Models.JobOption">
+            <summary>
+            Describe fields from the job during reading data from configuration file
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.Models.JobOption.UniqueName">
+            <summary>
+            Unique name of job
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.Models.JobOption.IsEnabled">
+            <summary>
+            Condition Is enabled for reading
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.Models.JobOption.CronSchedule">
+            <summary>
+            Cron schedule expressions (min, hours, day, month, day of week)
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.Models.JobOption.Action">
+            <summary>
+            Name of the action method (class)
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.Models.JobOption.Options">
+            <summary>
+            Additional parameters like EndPointUrl 
+            </summary>
+        </member>
+        <member name="T:CurrencyRates.Scheduler.Api.Models.JobServiceOption">
+            <summary>
+            Represent the list of all jobs
+            </summary>
+        </member>
+        <member name="T:CurrencyRates.Scheduler.Api.Models.RabbitSettings">
+            <summary>
+            Describe the main settings for rabbit environment
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.Models.RabbitSettings.HostName">
+            <summary>
+            Name of the host
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.Models.RabbitSettings.Port">
+            <summary>
+            Port number
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.Models.RabbitSettings.Login">
+            <summary>
+            Login for connection(login) in rabbit on the server
+            </summary>
+        </member>
+        <member name="P:CurrencyRates.Scheduler.Api.Models.RabbitSettings.Password">
+            <summary>
+            Password for login in rabbit on the server
+            </summary>
+        </member>
         <member name="M:CurrencyRates.Scheduler.Api.Program.CreateHostBuilder(System.String[])">
             <summary>
             Allow to read parameters appsettings.json when app starts and if .env have the same variable as in appsettings then they were
             overwritten with parameters that are passed to .env file
             This is how we configure the application without changing the upsets physically on the disk
+            </summary>
+        </member>
+        <member name="T:CurrencyRates.Scheduler.Api.Services.RabbitService">
+            <summary>
+            Service for handle queues
+            </summary>
+        </member>
+        <member name="M:CurrencyRates.Scheduler.Api.Services.RabbitService.OnReceived(System.Object,RabbitMQ.Client.Events.BasicDeliverEventArgs)">
+            <summary>
+            Get the message to scheduler command
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:CurrencyRates.Scheduler.Api.Services.RabbitService.InitializeRabbitMQListener">
+            <summary>
+            Through one queue, the Scheduler will receive a message that some connectors have appeared and he needs to add a job 
             </summary>
         </member>
     </members>

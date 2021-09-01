@@ -42,7 +42,7 @@ namespace CurrencyRates.Scheduler.Api
 
             services.Configure<RabbitSettings>(_configuration.GetSection("RabbitSettings"));
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddHostedService<RabbitService>();
+            services.AddHostedService<RabbitCommandHandlerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

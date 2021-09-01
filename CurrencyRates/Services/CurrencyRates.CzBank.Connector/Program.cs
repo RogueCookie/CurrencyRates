@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using CurrencyRates.Core;
 using CurrencyRates.CzBank.Connector.Models;
@@ -22,7 +23,9 @@ namespace CurrencyRates.CzBank.Connector
                 _configuration = builderContext.Configuration;
 
                 services.Configure<RabbitSettings>(_configuration.GetSection("RabbitSettings"));
-                services.AddSingleton<RabbitMqService>();
+                services.Configure<AddNewJobModel>(_configuration.GetSection("RegisterSettings"));
+
+                services.AddSingleton<RabbitCommandHandlerService>();
 
                 var logger = new LoggerConfiguration()
                     .Enrich.FromLogContext()
@@ -40,11 +43,11 @@ namespace CurrencyRates.CzBank.Connector
                     });
                 });
 
+            // execute ones when service starts
             await host.RunAsync((serviceProvider) =>
             {
-                var eventBus = serviceProvider.GetRequiredService<RabbitMqService>();
+                var eventBus = serviceProvider.GetRequiredService<RabbitCommandHandlerService>();
                 eventBus.Start();
-
             });
         }
     }

@@ -25,11 +25,6 @@ RabbitSettings
 - "Login": Login for connection(login) in rabbit on the server
 - "Password": Password for login in rabbit on the server
 
-### Rabbit container
-For training purposes, I changed Rabbit's default account settings (login: guest, password: guest)
-so at the first usage of container go to Rabbit under default credentials then add
-in the Admin panel the new user and specify his new credentials and it is important to assign Administrator rights. 
-
 #### Through a message in â exchange Scheduler
 Will be automatically registered service connector when we start current service
 

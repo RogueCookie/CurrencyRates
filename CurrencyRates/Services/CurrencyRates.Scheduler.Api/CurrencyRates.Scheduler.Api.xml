@@ -42,6 +42,16 @@
             </summary>
             <param name="app"></param>
         </member>
+        <member name="T:CurrencyRates.Scheduler.Api.MediatR.Commands.AddNewJob">
+            <summary>
+            Add new job if not exist or update previous one
+            </summary>
+        </member>
+        <member name="M:CurrencyRates.Scheduler.Api.MediatR.Commands.AddNewJobHandler.Handle(CurrencyRates.Scheduler.Api.MediatR.Commands.AddNewJob,System.Threading.CancellationToken)">
+            <summary>
+            Add new job if not exist or update previous one
+            </summary>
+        </member>
         <member name="M:CurrencyRates.Scheduler.Api.MediatR.Commands.SendCommandHandler.Handle(CurrencyRates.Scheduler.Api.MediatR.Commands.SendCommand,System.Threading.CancellationToken)">
             <summary>
             Send command by mediator

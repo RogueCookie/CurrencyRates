@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace CurrencyRates.Scheduler.Api.MediatR.Commands
 {
+    /// <summary>
+    /// Add new job if not exist or update previous one
+    /// </summary>
     public class AddNewJob : CommandModel, IRequest
     {
     }
@@ -23,6 +26,9 @@ namespace CurrencyRates.Scheduler.Api.MediatR.Commands
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        /// <summary>
+        /// Add new job if not exist or update previous one
+        /// </summary>
         public Task<Unit> Handle(AddNewJob request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"reccuring job was started");
@@ -30,7 +36,7 @@ namespace CurrencyRates.Scheduler.Api.MediatR.Commands
             return Unit.Task;
         }
 
-        private void Send(AddNewJob request)
+        public void Send(AddNewJob request)
         {
             _mediator.Send(new SendCommand()
             {

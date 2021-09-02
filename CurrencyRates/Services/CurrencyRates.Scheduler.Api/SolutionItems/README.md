@@ -25,7 +25,6 @@ RabbitSettings
 - "Login": Login for connection(login) in rabbit on the server
 - "Password": Password for login in rabbit on the server
 
-
 #### Through a message in â exchange Scheduler
 Will be automatically registered service connector when we start current service
 

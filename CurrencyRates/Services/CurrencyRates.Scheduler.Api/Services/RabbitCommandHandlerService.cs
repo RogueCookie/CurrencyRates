@@ -19,7 +19,7 @@ namespace CurrencyRates.Scheduler.Api.Services
     /// <summary>
     /// Service for handle queues
     /// </summary>
-    public class RabbitService : BackgroundService
+    public class RabbitCommandHandlerService : BackgroundService
     {
         private readonly string _hostname;
         private readonly int _port;
@@ -28,9 +28,9 @@ namespace CurrencyRates.Scheduler.Api.Services
         private readonly IMediator _mediator;
         private IConnection _connection;
         private IModel _channel;
-        private readonly ILogger<RabbitService> _logger;
+        private readonly ILogger<RabbitCommandHandlerService> _logger;
 
-        public RabbitService(IOptions<RabbitSettings> options, IMediator mediator, ILogger<RabbitService> logger)
+        public RabbitCommandHandlerService(IOptions<RabbitSettings> options, IMediator mediator, ILogger<RabbitCommandHandlerService> logger)
         {
             _hostname = options.Value.HostName;
             _port = options.Value.Port;

@@ -42,6 +42,16 @@
             </summary>
             <param name="app"></param>
         </member>
+        <member name="T:CurrencyRates.Scheduler.Api.MediatR.Commands.AddNewJob">
+            <summary>
+            Add new job if not exist or update previous one
+            </summary>
+        </member>
+        <member name="M:CurrencyRates.Scheduler.Api.MediatR.Commands.AddNewJobHandler.Handle(CurrencyRates.Scheduler.Api.MediatR.Commands.AddNewJob,System.Threading.CancellationToken)">
+            <summary>
+            Add new job if not exist or update previous one
+            </summary>
+        </member>
         <member name="M:CurrencyRates.Scheduler.Api.MediatR.Commands.SendCommandHandler.Handle(CurrencyRates.Scheduler.Api.MediatR.Commands.SendCommand,System.Threading.CancellationToken)">
             <summary>
             Send command by mediator
@@ -151,19 +161,19 @@
             This is how we configure the application without changing the upsets physically on the disk
             </summary>
         </member>
-        <member name="T:CurrencyRates.Scheduler.Api.Services.RabbitService">
+        <member name="T:CurrencyRates.Scheduler.Api.Services.RabbitCommandHandlerService">
             <summary>
             Service for handle queues
             </summary>
         </member>
-        <member name="M:CurrencyRates.Scheduler.Api.Services.RabbitService.OnReceived(System.Object,RabbitMQ.Client.Events.BasicDeliverEventArgs)">
+        <member name="M:CurrencyRates.Scheduler.Api.Services.RabbitCommandHandlerService.OnReceived(System.Object,RabbitMQ.Client.Events.BasicDeliverEventArgs)">
             <summary>
             Get the message to scheduler command
             </summary>
             <param name="sender"></param>
             <param name="e"></param>
         </member>
-        <member name="M:CurrencyRates.Scheduler.Api.Services.RabbitService.InitializeRabbitMQListener">
+        <member name="M:CurrencyRates.Scheduler.Api.Services.RabbitCommandHandlerService.InitializeRabbitMQListener">
             <summary>
             Through one queue, the Scheduler will receive a message that some connectors have appeared and he needs to add a job 
             </summary>

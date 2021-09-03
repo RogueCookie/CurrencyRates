@@ -15,7 +15,7 @@ namespace CurrencyRates.CzBank.Connector.Services
     /// <summary>
     /// Service for send data to the Loader service
     /// </summary>
-    public class RabbitCommandHandlerService
+    public class RabbitCommandHandlerService : IHostedService
     {
         private readonly RabbitSettings _settings;
         private readonly AddNewJobModel _registerSettings;
@@ -29,9 +29,10 @@ namespace CurrencyRates.CzBank.Connector.Services
             _logger = logger;
         }
 
-        public void Start()
+        public Task StartAsync(CancellationToken cancellationToken)
         {
             DeclareChannel();
+            return Task.CompletedTask;
         }
 
 
@@ -74,6 +75,11 @@ namespace CurrencyRates.CzBank.Connector.Services
                 exchange:Exchanges.Scheduler.ToString(),
                 routingKey: ROUTING_KEY,
                 body: messageToBytes);
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
     }
 }

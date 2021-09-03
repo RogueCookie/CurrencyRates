@@ -1,4 +1,4 @@
-﻿namespace CurrencyRates.CzBank.Connector.Models
+﻿namespace CurrencyRates.Core.Models
 {
     /// <summary>
     /// Describe the main settings for rabbit environment

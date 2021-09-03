@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using CurrencyRates.Core;
-using CurrencyRates.CzBank.Connector.Models;
+using CurrencyRates.Core.Models;
 using CurrencyRates.CzBank.Connector.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -29,7 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="MediatR\Models\" />
     <Folder Include="MediatR\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CurrencyRates.Core\CurrencyRates.Core.csproj" />
   </ItemGroup>
 
 </Project>

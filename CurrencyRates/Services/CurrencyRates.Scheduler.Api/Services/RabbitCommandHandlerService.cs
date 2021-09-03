@@ -2,10 +2,10 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CurrencyRates.Core.Enums;
+using CurrencyRates.Core.Models;
 using CurrencyRates.Scheduler.Api.Enums;
 using CurrencyRates.Scheduler.Api.MediatR.Commands;
-using CurrencyRates.Scheduler.Api.MediatrR.Models;
-using CurrencyRates.Scheduler.Api.Models;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -59,7 +59,7 @@ namespace CurrencyRates.Scheduler.Api.Services
             try
             {
                 _logger.LogInformation($"Scheduler consume {e.RoutingKey} Received {message}");
-                var commandModel = JsonConvert.DeserializeObject<CommandModel>(message);
+                var commandModel = JsonConvert.DeserializeObject<AddNewJobModel>(message);
                 _mediator.Send(new AddNewJob()
                 {
                     JobName = commandModel.JobName,

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
-using CurrencyRates.Loader.Models;
+using CurrencyRates.Core.Enums;
+using CurrencyRates.Core.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;

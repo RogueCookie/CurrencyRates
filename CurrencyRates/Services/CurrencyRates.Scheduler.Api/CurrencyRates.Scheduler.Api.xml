@@ -10,11 +10,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:CurrencyRates.Scheduler.Api.Enums.Exchanges">
-            <summary>
-            Enumeration of all exchanges in the system
-            </summary>
-        </member>
         <member name="T:CurrencyRates.Scheduler.Api.Enums.RoutingKey">
             <summary>
             Key used for binding queue with exchanges
@@ -59,41 +54,6 @@
             <param name="request"></param>
             <param name="cancellationToken"></param>
         </member>
-        <member name="T:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel">
-            <summary>
-            Data which are used for register a new job in hangfire with particular settings for rabbitMq
-            </summary>
-        </member>
-        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.Version">
-            <summary>
-            Version of created job
-            </summary>
-        </member>
-        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.Command">
-            <summary>
-            Command for execution
-            </summary>
-        </member>
-        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.JobName">
-            <summary>
-            Name of the job
-            </summary>
-        </member>
-        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.IsEnabled">
-            <summary>
-            Whether job marked as enabled (active) or not
-            </summary>
-        </member>
-        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.RoutingKey">
-            <summary>
-            Routing by which this job  will be communicated with exchange
-            </summary>
-        </member>
-        <member name="P:CurrencyRates.Scheduler.Api.MediatrR.Models.CommandModel.CronScheduler">
-            <summary>
-            Cron settings (time period for execution)
-            </summary>
-        </member>
         <member name="T:CurrencyRates.Scheduler.Api.Models.JobOption">
             <summary>
             Describe fields from the job during reading data from configuration file
@@ -127,31 +87,6 @@
         <member name="T:CurrencyRates.Scheduler.Api.Models.JobServiceOption">
             <summary>
             Represent the list of all jobs
-            </summary>
-        </member>
-        <member name="T:CurrencyRates.Scheduler.Api.Models.RabbitSettings">
-            <summary>
-            Describe the main settings for rabbit environment
-            </summary>
-        </member>
-        <member name="P:CurrencyRates.Scheduler.Api.Models.RabbitSettings.HostName">
-            <summary>
-            Name of the host
-            </summary>
-        </member>
-        <member name="P:CurrencyRates.Scheduler.Api.Models.RabbitSettings.Port">
-            <summary>
-            Port number
-            </summary>
-        </member>
-        <member name="P:CurrencyRates.Scheduler.Api.Models.RabbitSettings.Login">
-            <summary>
-            Login for connection(login) in rabbit on the server
-            </summary>
-        </member>
-        <member name="P:CurrencyRates.Scheduler.Api.Models.RabbitSettings.Password">
-            <summary>
-            Password for login in rabbit on the server
             </summary>
         </member>
         <member name="M:CurrencyRates.Scheduler.Api.Program.CreateHostBuilder(System.String[])">

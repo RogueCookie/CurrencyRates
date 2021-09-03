@@ -1,9 +1,8 @@
 ﻿using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using CurrencyRates.Scheduler.Api.Enums;
-using CurrencyRates.Scheduler.Api.MediatrR.Models;
-using CurrencyRates.Scheduler.Api.Models;
+using CurrencyRates.Core.Enums;
+using CurrencyRates.Core.Models;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -11,7 +10,7 @@ using RabbitMQ.Client;
 
 namespace CurrencyRates.Scheduler.Api.MediatR.Commands
 {
-    public class SendCommand : CommandModel, IRequest
+    public class SendCommand : AddNewJobModel, IRequest
     {
     }
 

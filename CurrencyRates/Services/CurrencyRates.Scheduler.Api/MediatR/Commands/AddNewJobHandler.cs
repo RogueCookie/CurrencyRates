@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CurrencyRates.Scheduler.Api.MediatrR.Models;
+using CurrencyRates.Core.Models;
 using Hangfire;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -11,7 +11,7 @@ namespace CurrencyRates.Scheduler.Api.MediatR.Commands
     /// <summary>
     /// Add new job if not exist or update previous one
     /// </summary>
-    public class AddNewJob : CommandModel, IRequest
+    public class AddNewJob : AddNewJobModel, IRequest
     {
     }
 

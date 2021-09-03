@@ -28,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRates.Scheduler.Api
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{32724CA7-C85B-4148-9B53-DED12099AE8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyRates.Core", "Core\CurrencyRates.Core\CurrencyRates.Core.csproj", "{1B428102-73D3-4286-A0B7-FB404014339F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRates.Core", "Core\CurrencyRates.Core\CurrencyRates.Core.csproj", "{1B428102-73D3-4286-A0B7-FB404014339F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

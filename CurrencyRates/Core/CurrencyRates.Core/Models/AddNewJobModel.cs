@@ -1,4 +1,4 @@
-﻿namespace CurrencyRates.CzBank.Connector.Models
+﻿namespace CurrencyRates.Core.Models
 {
     /// <summary>
     /// Data which are used for register a new job in hangfire with particular settings for rabbitMq

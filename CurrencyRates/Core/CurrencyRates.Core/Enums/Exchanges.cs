@@ -1,4 +1,4 @@
-﻿namespace CurrencyRates.Loader.Models
+﻿namespace CurrencyRates.Core.Enums
 {
     /// <summary>
     /// Enumeration of all exchanges in the system

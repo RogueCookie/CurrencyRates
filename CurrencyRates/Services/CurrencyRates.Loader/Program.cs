@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using CurrencyRates.Core;
-using CurrencyRates.Loader.Models;
+using CurrencyRates.Core.Models;
 using CurrencyRates.Loader.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;

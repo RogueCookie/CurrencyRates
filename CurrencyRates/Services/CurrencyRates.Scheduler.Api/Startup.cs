@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
-using CurrencyRates.Scheduler.Api.Models;
+using CurrencyRates.Core.Models;
 using CurrencyRates.Scheduler.Api.Services;
 using MediatR;
 

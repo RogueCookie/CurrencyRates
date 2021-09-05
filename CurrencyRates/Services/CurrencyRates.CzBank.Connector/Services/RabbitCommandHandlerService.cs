@@ -4,83 +4,118 @@ using System.Threading;
 using System.Threading.Tasks;
 using CurrencyRates.Core.Enums;
 using CurrencyRates.Core.Models;
+using CurrencyRates.CzBank.Connector.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Exceptions;
+using RabbitMQ.Client.Events;
 
 namespace CurrencyRates.CzBank.Connector.Services
 {
     /// <summary>
-    /// Service for send data to the Loader service
+    /// Service for handling all messages from RabbitMq
     /// </summary>
-    public class RabbitCommandHandlerService : IHostedService
+    public class RabbitCommandHandlerService : BackgroundService
     {
-        private readonly RabbitSettings _settings;
+        private readonly RabbitSettings _options;
         private readonly AddNewJobModel _registerSettings;
         private readonly ILogger<RabbitCommandHandlerService> _logger;
-        private const string ROUTING_KEY = "AddNewJob";
+        private readonly IClientConnectorService _clientConnectorService;
+        private IConnection _connection;
+        private IModel _channel;
 
-        public RabbitCommandHandlerService(IOptions<RabbitSettings> options, IOptions<AddNewJobModel> registerSettings, ILogger<RabbitCommandHandlerService> logger)
+        public RabbitCommandHandlerService(IOptions<RabbitSettings> options,
+            IOptions<AddNewJobModel> registerSettings,
+            ILogger<RabbitCommandHandlerService> logger,
+            IClientConnectorService clientConnectorService)
         {
-            _settings = options.Value ?? throw new ArgumentNullException(nameof(options));
+            _options = options.Value ?? throw new ArgumentNullException(nameof(options));
             _registerSettings = registerSettings.Value ?? throw new ArgumentNullException(nameof(registerSettings));
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _clientConnectorService = clientConnectorService ?? throw new ArgumentNullException(nameof(clientConnectorService));
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            DeclareChannel();
+            cancellationToken.ThrowIfCancellationRequested();
+            InitializeRabbitMQListener();
             return Task.CompletedTask;
+            
         }
 
+        // ReSharper disable once InconsistentNaming
+        /// <summary>
+        /// Through one queue, the Scheduler will send a message (command) which work must be executed 
+        /// </summary>
+        private void InitializeRabbitMQListener()
+        {
+            var factory = new ConnectionFactory
+            {
+                HostName = _options.HostName,
+                UserName = _options.Login,
+                Password = _options.Password,
+                Port = _options.Port,
+                DispatchConsumersAsync = true
+            };
+
+            _connection = factory.CreateConnection(clientProvidedName: "Cz Bank Connector listener");
+            _channel = _connection.CreateModel();
+            _channel.ExchangeDeclare(Exchanges.Scheduler.ToString(), ExchangeType.Direct);
+
+            var queueName = "Execute.Job.CzBank";
+            _channel.QueueDeclare(queueName, exclusive: false, durable: true, autoDelete: false);
+            _channel.BasicQos(0, 1, false);
+            _channel.QueueBind(queueName, Exchanges.Scheduler.ToString(), _registerSettings.RoutingKey);
+
+            var consumer = new AsyncEventingBasicConsumer(_channel);
+            consumer.Received += async (model, args) =>
+            {
+                var body = args.Body;
+                var message = Encoding.UTF8.GetString(body.ToArray());
+                var commandModel = JsonConvert.DeserializeObject<AddNewJobModel>(message);
+                await ExecuteCommand(commandModel?.Command);
+                _logger.LogInformation($"Consumer {queueName} with mes {message}");
+            };
+            _channel.BasicConsume(queueName, consumer: consumer, autoAck: false);
+            _logger.LogInformation("Cz Bank connector get command from scheduler");
+        }
 
         /// <summary>
-        /// Setup connection to RabbitMQ server
+        /// TODO
         /// </summary>
-        public void DeclareChannel()
+        /// <param name="command">Type of command for execurion</param>
+        /// <returns>TODO</returns>
+        private async Task ExecuteCommand(string command)
         {
-            try
+            switch (command)
             {
-                var factory = new ConnectionFactory()
-                {
-                    HostName = _settings.HostName,
-                    UserName = _settings.Login,
-                    Password = _settings.Password,
-                    Port = _settings.Port
-                };
-
-                using var connection = factory.CreateConnection();
-                using var channel = connection.CreateModel();
-                RegistrationInScheduler(channel);
-            }
-            catch (BrokerUnreachableException ex)
-            {
-                _logger.LogError(ex, "RabbitService Client DeclareChannel() error in Czech Bank connector");
+                case "Download":
+                    var foo = await _clientConnectorService.DownloadDataDailyAsync(DateTime.Now);
+                    break;
+                case "StoreDate":
+                    Store();
+                    break;
+                default:
+                    throw new Exception();
             }
         }
 
         /// <summary>
-        /// Self registration for current service in Scheduler if not exist
+        /// TODO
         /// </summary>
-        private void RegistrationInScheduler(IModel channel)
+        private void Store()
         {
-            var modelForRegistration = _registerSettings;
-            var message = JsonConvert.SerializeObject(modelForRegistration);
-            var messageToBytes = Encoding.UTF8.GetBytes(message);
-
-            channel.ExchangeDeclare(exchange: Exchanges.Scheduler.ToString(), type: ExchangeType.Direct);
-            channel.BasicPublish(
-                exchange:Exchanges.Scheduler.ToString(),
-                routingKey: ROUTING_KEY,
-                body: messageToBytes);
+            Console.WriteLine("Store");
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        /// <summary>
+        /// TODO
+        /// </summary>
+        private void Download()
         {
-            return Task.CompletedTask;
+            Console.WriteLine("Download");
         }
     }
 }

@@ -11,6 +11,7 @@ using CurrencyRates.CzBank.Connector.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
+using Polly.Extensions.Http;
 using Serilog;
 
 namespace CurrencyRates.CzBank.Connector
@@ -37,7 +38,7 @@ namespace CurrencyRates.CzBank.Connector
                 services.AddHttpClient(HttpClientConstants.Daily, client =>
                 {
                     client.BaseAddress = new Uri("https://www.cnb.cz");
-                });//.AddPolicyHandler(GetRetryPolicy()); TODO
+                }).AddPolicyHandler(GetRetryPolicy());
 
                 var logger = new LoggerConfiguration()
                     .Enrich.FromLogContext()
@@ -63,12 +64,15 @@ namespace CurrencyRates.CzBank.Connector
         }
 
         /// <summary>
-        /// TODO
+        /// Add policy for retry HTTP requests (for HttpClientFactory resilience and transient-fault handling capabilities).
+        /// Handle HttpRequestExceptions, 404 not found and 5xx status codes.
         /// </summary>
-        /// <returns></returns>
         private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
         {
-            throw new NotImplementedException();
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+                .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
         }
     }
 }

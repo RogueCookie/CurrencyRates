@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using CurrencyRates.Core.Enums;
 using CurrencyRates.Core.Models;
-using CurrencyRates.Scheduler.Api.Enums;
 using CurrencyRates.Scheduler.Api.MediatR.Commands;
 using MediatR;
 using Microsoft.Extensions.Hosting;
@@ -99,7 +98,7 @@ namespace CurrencyRates.Scheduler.Api.Services
             var queueName = "Register.New.Job";
             _channel.QueueDeclare(queueName, exclusive: false, durable: true, autoDelete: false);
             _channel.BasicQos(0, 1, false);
-            _channel.QueueBind(queueName, Exchanges.Scheduler.ToString(), RoutingKey.AddNewJob.ToString());
+            _channel.QueueBind(queueName, Exchanges.Scheduler.ToString(), RoutingKeys.AddNewJob.ToString());
 
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += OnReceived;

@@ -21,7 +21,6 @@ namespace CurrencyRates.CzBank.Connector.Services
         private readonly RabbitSettings _settings;
         private readonly AddNewJobModel _registerSettings;
         private readonly ILogger<JobRegistrationService> _logger;
-        private const string ROUTING_KEY = "AddNewJob";
 
         public JobRegistrationService(IOptions<RabbitSettings> options, IOptions<AddNewJobModel> registerSettings, ILogger<JobRegistrationService> logger)
         {
@@ -74,7 +73,7 @@ namespace CurrencyRates.CzBank.Connector.Services
             channel.ExchangeDeclare(exchange: Exchanges.Scheduler.ToString(), type: ExchangeType.Direct);
             channel.BasicPublish(
                 exchange:Exchanges.Scheduler.ToString(),
-                routingKey: ROUTING_KEY,
+                routingKey: RoutingKeys.AddNewJob.ToString(),
                 body: messageToBytes);
         }
 

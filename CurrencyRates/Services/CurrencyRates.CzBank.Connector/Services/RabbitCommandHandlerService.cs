@@ -83,16 +83,16 @@ namespace CurrencyRates.CzBank.Connector.Services
         }
 
         /// <summary>
-        /// TODO
+        /// Switching between incoming commands 
         /// </summary>
-        /// <param name="command">Type of command for execurion</param>
+        /// <param name="command">Type of command for execution</param>
         /// <returns>TODO</returns>
         private async Task ExecuteCommand(string command)
         {
             switch (command)
             {
                 case "Download":
-                    var foo = await _clientConnectorService.DownloadDataDailyAsync(DateTime.Now);
+                    var foo = await _clientConnectorService.DownloadDataDailyAsync(DateTime.Now); //TODO problem in time? uts? what to return?
                     break;
                 case "StoreDate":
                     Store();

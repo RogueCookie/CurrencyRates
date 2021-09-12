@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CurrencyRates.CzBank.Connector.Models;
+using CurrencyRates.Core.Models;
 
 namespace CurrencyRates.CzBank.Connector.Interfaces
 {
@@ -11,6 +11,6 @@ namespace CurrencyRates.CzBank.Connector.Interfaces
         /// Download currency rates from particular source on current date
         /// </summary>
         /// <returns>List of clientModels (data serialized from source)</returns>
-        Task<List<DailyRates>> DownloadDataDailyAsync(DateTime date);
+        Task<List<LoaderCurrencyRatesModel>> DownloadDataDailyAsync(DateTime date);
     }
 }

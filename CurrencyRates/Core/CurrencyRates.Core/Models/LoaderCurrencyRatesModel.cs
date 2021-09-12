@@ -5,7 +5,7 @@ using CurrencyRates.Core.Enums;
 namespace CurrencyRates.Core.Models
 {
     /// <summary>
-    /// Allow to serialize/deserialize data when we get them from the clients (BtbConnector)
+    /// Currency rate model for one of the currencies. Allow to serialize/deserialize data when we get them from the clients
     /// </summary>
     public class LoaderCurrencyRatesModel
     {
@@ -17,7 +17,7 @@ namespace CurrencyRates.Core.Models
         /// <summary>
         /// List of rates (Kind of currency (shortcut) and it's rates)
         /// </summary>
-        public Dictionary<TypeOfCurrency, decimal> Rates { get; set; }
+        public List<DailyRates> Rates { get; set; }
 
         /// <summary>
         /// Currency by which the rest of the rates are correlated 

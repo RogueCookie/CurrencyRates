@@ -2,6 +2,9 @@
 
 namespace CurrencyRates.Core.Models
 {
+    /// <summary>
+    /// Currency rates in specific time range
+    /// </summary>
     public class TimedCurrencyRatesModel
     {
         /// <summary>
@@ -15,7 +18,7 @@ namespace CurrencyRates.Core.Models
         public string SourceName { get; set; }
 
         /// <summary>
-        /// Версия сообщения Канареечный деплой
+        /// Message version (Canary deploy) 
         /// </summary>
         public string Version { get; set; }
     }

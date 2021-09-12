@@ -168,6 +168,11 @@
         /// <summary>
         /// USA dollar
         /// </summary>
-        USD = 33
+        USD = 33,
+
+        /// <summary>
+        /// Czech crown 
+        /// </summary>
+        CZH = 35
     }
 }

@@ -10,7 +10,7 @@ using CsvHelper.Configuration;
 using CurrencyRates.Core.Enums;
 using CurrencyRates.Core.Models;
 using CurrencyRates.CzBank.Connector.Constants;
-using CurrencyRates.CzBank.Connector.Extentions;
+using CurrencyRates.CzBank.Connector.Extensions;
 using CurrencyRates.CzBank.Connector.Interfaces;
 using CurrencyRates.CzBank.Connector.Models;
 using Microsoft.Extensions.Logging;
@@ -24,14 +24,12 @@ namespace CurrencyRates.CzBank.Connector.Services
     public class ClientConnectorService : IClientConnectorService
     {
         private readonly HttpClient _httpClient;
-        private readonly IDataCommandSender _commandSender;
         private readonly ILogger<ClientConnectorService> _logger;
 
-        public ClientConnectorService(IHttpClientFactory httpClientFactory, IDataCommandSender commandSender, ILogger<ClientConnectorService> logger)
+        public ClientConnectorService(IHttpClientFactory httpClientFactory, ILogger<ClientConnectorService> logger)
         {
             // take free client from the factory
             _httpClient = httpClientFactory.CreateClient(HttpClientConstants.Daily);
-            _commandSender = commandSender ?? throw new ArgumentNullException(nameof(commandSender));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -55,13 +53,14 @@ namespace CurrencyRates.CzBank.Connector.Services
                 });
 
                 var responseModel = csvReader.GetRecords<DailyRates>().ToList();
-                var convert = responseModel.ConvertResponse(DateTime.UtcNow, TypeOfCurrency.CZH); //TODO tests
-                return null; //TODO
+                var convertResponse = responseModel.ConvertResponse(date, TypeOfCurrency.CZH); //TODO tests
+
+                return convertResponse; 
             }
             catch (Exception exception)
             {
                 _logger.LogError("Czech Bank Connector Request error {Message}", exception.Message);
-                return null;
+                throw;
             }
         }
     }

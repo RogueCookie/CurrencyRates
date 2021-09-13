@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,18 +24,21 @@ namespace CurrencyRates.CzBank.Connector.Services
         private readonly AddNewJobModel _registerSettings;
         private readonly ILogger<RabbitCommandHandlerService> _logger;
         private readonly IClientConnectorService _clientConnectorService;
+        private readonly IDataCommandSender _commandSender;
         private IConnection _connection;
         private IModel _channel;
 
         public RabbitCommandHandlerService(IOptions<RabbitSettings> options,
             IOptions<AddNewJobModel> registerSettings,
             ILogger<RabbitCommandHandlerService> logger,
-            IClientConnectorService clientConnectorService)
+            IClientConnectorService clientConnectorService,
+            IDataCommandSender commandSender)
         {
             _options = options.Value ?? throw new ArgumentNullException(nameof(options));
             _registerSettings = registerSettings.Value ?? throw new ArgumentNullException(nameof(registerSettings));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _clientConnectorService = clientConnectorService ?? throw new ArgumentNullException(nameof(clientConnectorService));
+            _commandSender = commandSender ?? throw new ArgumentNullException(nameof(commandSender));
         }
 
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
@@ -92,7 +96,9 @@ namespace CurrencyRates.CzBank.Connector.Services
             switch (command)
             {
                 case "Download":
-                    var foo = await _clientConnectorService.DownloadDataDailyAsync(DateTime.Now); //TODO problem in time? uts? what to return?
+                    var currencyRatesResponse = await _clientConnectorService.DownloadDataDailyAsync(DateTime.UtcNow);
+                    var filledProviderData = FillProviderData(currencyRatesResponse);
+                    await _commandSender.SendDataToLoader(filledProviderData); //TODO Async?
                     break;
                 case "StoreDate":
                     Store();
@@ -100,6 +106,18 @@ namespace CurrencyRates.CzBank.Connector.Services
                 default:
                     throw new Exception();
             }
+        }
+
+        private TimedCurrencyRatesModel FillProviderData(List<LoaderCurrencyRatesModel> currencyRatesResponse)
+        {
+            if (currencyRatesResponse == null) throw new ArgumentNullException(nameof(currencyRatesResponse));
+
+            return new TimedCurrencyRatesModel()
+            {
+                SourceName = "CzBank", //TODO shit
+                TimedRates = currencyRatesResponse,
+                Version = "1.0" //TODO const or dynamic
+            };
         }
 
         /// <summary>

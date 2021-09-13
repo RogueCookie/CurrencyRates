@@ -33,6 +33,7 @@ namespace CurrencyRates.CzBank.Connector
                 
                 services.AddHostedService<JobRegistrationService>();
                 services.AddTransient<IClientConnectorService, ClientConnectorService>();
+                services.AddTransient<IDataCommandSender, DataCommandSender>();
                 services.AddHostedService<RabbitCommandHandlerService>();
 
                 services.AddHttpClient(HttpClientConstants.Daily, client =>

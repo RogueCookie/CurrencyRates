@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -12,7 +11,6 @@ using CurrencyRates.Core.Models;
 using CurrencyRates.CzBank.Connector.Constants;
 using CurrencyRates.CzBank.Connector.Extensions;
 using CurrencyRates.CzBank.Connector.Interfaces;
-using CurrencyRates.CzBank.Connector.Models;
 using Microsoft.Extensions.Logging;
 using DailyRates = CurrencyRates.CzBank.Connector.Models.DailyRates;
 
@@ -34,7 +32,7 @@ namespace CurrencyRates.CzBank.Connector.Services
         }
 
         /// <inheritdoc />
-        public async Task<List<LoaderCurrencyRatesModel>> DownloadDataDailyAsync(DateTime date)//TODO
+        public async Task<TimedCurrencyRatesModel> DownloadDataDailyAsync(DateTime date)
         {
             try
             {
@@ -44,7 +42,7 @@ namespace CurrencyRates.CzBank.Connector.Services
 
                 var dailyRequestData = await textReader.ReadLineAsync();
 
-                _logger.LogInformation(dailyRequestData);
+                _logger.LogInformation($"Received data from provider at {DateTime.Now}");
 
                 var csvReader = new CsvReader(textReader, new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
@@ -53,7 +51,7 @@ namespace CurrencyRates.CzBank.Connector.Services
                 });
 
                 var responseModel = csvReader.GetRecords<DailyRates>().ToList();
-                var convertResponse = responseModel.ConvertResponse(date, TypeOfCurrency.CZH); //TODO tests
+                var convertResponse = responseModel.ConvertResponse(date, TypeOfCurrency.CZH); 
 
                 return convertResponse; 
             }

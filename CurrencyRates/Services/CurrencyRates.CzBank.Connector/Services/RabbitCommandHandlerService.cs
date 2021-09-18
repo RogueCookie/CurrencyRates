@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -90,15 +89,13 @@ namespace CurrencyRates.CzBank.Connector.Services
         /// Switching between incoming commands 
         /// </summary>
         /// <param name="command">Type of command for execution</param>
-        /// <returns>TODO</returns>
         private async Task ExecuteCommand(string command)
         {
             switch (command)
             {
                 case "Download":
                     var currencyRatesResponse = await _clientConnectorService.DownloadDataDailyAsync(DateTime.UtcNow);
-                    var filledProviderData = FillProviderData(currencyRatesResponse);
-                    await _commandSender.SendDataToLoader(filledProviderData); //TODO Async?
+                    _commandSender.SendDataToLoader(currencyRatesResponse); 
                     break;
                 case "StoreDate":
                     Store();
@@ -106,18 +103,6 @@ namespace CurrencyRates.CzBank.Connector.Services
                 default:
                     throw new Exception();
             }
-        }
-
-        private TimedCurrencyRatesModel FillProviderData(List<LoaderCurrencyRatesModel> currencyRatesResponse)
-        {
-            if (currencyRatesResponse == null) throw new ArgumentNullException(nameof(currencyRatesResponse));
-
-            return new TimedCurrencyRatesModel()
-            {
-                SourceName = "CzBank", //TODO shit
-                TimedRates = currencyRatesResponse,
-                Version = "1.0" //TODO const or dynamic
-            };
         }
 
         /// <summary>

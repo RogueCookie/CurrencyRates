@@ -13,6 +13,6 @@ namespace CurrencyRates.CzBank.Connector.Interfaces
         /// </summary>
         /// <param name="timedCurrencyRatesModel">Prepared data from the client</param>
         /// <returns></returns>//TODO
-        Task SendDataToLoader(TimedCurrencyRatesModel timedCurrencyRatesModel);
+        void SendDataToLoader(TimedCurrencyRatesModel timedCurrencyRatesModel);
     }
 }

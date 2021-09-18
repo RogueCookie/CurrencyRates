@@ -12,6 +12,9 @@ namespace CurrencyRates.CzBank.Connector.Extensions
     /// </summary>
     public static class CurrencyRatesExtensions
     {
+        private const string SOURCE_NAME = "Czech Bank";
+        private const string VERSION = "1.0";
+
         /// <summary>
         /// Convert data from the client to our principal model
         /// </summary>
@@ -19,9 +22,9 @@ namespace CurrencyRates.CzBank.Connector.Extensions
         /// <param name="dateTime">Date when data was downloaded</param>
         /// <param name="masterCurrency">The currency by which the downloaded currency rates are compared</param>
         /// <returns>Prepared model for sending to Loader service</returns>
-        public static List<LoaderCurrencyRatesModel> ConvertResponse(this IEnumerable<Models.DailyRates> dailyRates, DateTime dateTime, TypeOfCurrency masterCurrency)
+        public static TimedCurrencyRatesModel ConvertResponse(this IEnumerable<Models.DailyRates> dailyRates, DateTime dateTime, TypeOfCurrency masterCurrency)
         {
-            return new List<LoaderCurrencyRatesModel>()
+            var rates = new List<LoaderCurrencyRatesModel>()
             {
                 new LoaderCurrencyRatesModel()
                 {
@@ -37,6 +40,13 @@ namespace CurrencyRates.CzBank.Connector.Extensions
                         })
                         .ToList()
                 }
+            };
+
+            return new TimedCurrencyRatesModel()
+            {
+                SourceName = SOURCE_NAME,
+                TimedRates = rates,
+                Version = VERSION
             };
         }
     }

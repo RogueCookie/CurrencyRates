@@ -5,9 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System;
-using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace CurrencyRates.CzBank.Connector.Services
@@ -22,11 +20,11 @@ namespace CurrencyRates.CzBank.Connector.Services
         public DataCommandSender(IOptions<RabbitSettings> options, ILogger<RabbitCommandHandlerService> logger)
         {
             _options = options.Value ?? throw new ArgumentNullException(nameof(options));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));//TODO
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         ///<inheritdoc />
-        public Task SendDataToLoader(TimedCurrencyRatesModel timedCurrencyRatesModel)
+        public void SendDataToLoader(TimedCurrencyRatesModel timedCurrencyRatesModel)
         {
             var factory = new ConnectionFactory
             {
@@ -41,27 +39,25 @@ namespace CurrencyRates.CzBank.Connector.Services
 
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
-            Publish(channel, timedCurrencyRatesModel);
-            return Task.CompletedTask;
+            Publish(timedCurrencyRatesModel);
         }
 
         /// <summary>
         /// Send data to Exchange Loader
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">Common AMQP model</param>
         /// <param name="timedCurrencyRatesModel">Data of currency rates in some time range</param>
-        private static void Publish(IModel model, TimedCurrencyRatesModel timedCurrencyRatesModel)
+        private void Publish(TimedCurrencyRatesModel timedCurrencyRatesModel)
         {
             try
             {
                 var serializedData = JsonConvert.SerializeObject(timedCurrencyRatesModel);
                 var dataInBytes = Encoding.UTF8.GetBytes(serializedData);
-                model.BasicPublish(exchange: Exchanges.Loader.ToString(), routingKey: "", basicProperties: null, body: dataInBytes);
+                _channel.BasicPublish(exchange: Exchanges.Loader.ToString(), routingKey: "", basicProperties: null, body: dataInBytes);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                //TODO log
-                throw;
+                _logger.LogError($"An exception occurred during attempt to publish message to exchange Loader {ex} at {DateTime.Now}");
             }
             
         }

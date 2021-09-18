@@ -87,11 +87,16 @@ namespace CurrencyRates.Loader.Services
                 var message = Encoding.UTF8.GetString(body.ToArray());
                 _logger.LogInformation($"");//TODO
 
-                await _mediator.Send(new ValidateResponseModel()
+                var result = await _mediator.Send(new ValidateResponseModel()
                 {
                     Message = message
                 }, cancellationToken);
 
+                if (result == null)
+                {
+                    //dead letter queue //TODO
+                    return;
+                }
             };
             _channel.BasicConsume(queues.QueueName, true, consumer);
         }

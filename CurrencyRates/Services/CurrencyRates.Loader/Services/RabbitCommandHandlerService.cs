@@ -30,16 +30,17 @@ namespace CurrencyRates.Loader.Services
             _settings = options.Value ?? throw new ArgumentNullException(nameof(options));
         }
 
-        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+        protected override Task ExecuteAsync(CancellationToken cancellationToken)
         { 
             DeclareChannel();
 
-            if (_channel != null)
-                await Consume(cancellationToken);
+            if (_channel != null) 
+                Consume(cancellationToken);
             else
             {
                 //helthcheck все плохо перезапусти сервис
             }
+            return Task.CompletedTask;
         }
 
 
@@ -55,7 +56,8 @@ namespace CurrencyRates.Loader.Services
                     HostName = _settings.HostName,
                     UserName = _settings.Login,
                     Password = _settings.Password,
-                    Port = _settings.Port
+                    Port = _settings.Port,
+                    DispatchConsumersAsync = true
                 };
 
                 _connection = factory.CreateConnection();
@@ -71,13 +73,13 @@ namespace CurrencyRates.Loader.Services
         /// <summary>
         /// Read message from the queue 
         /// </summary>
-        private async Task Consume(CancellationToken cancellationToken)
+        private void Consume(CancellationToken cancellationToken)
         {
             if (_channel == null) throw new ArgumentNullException(nameof(_channel));
 
             _channel.ExchangeDeclare(Exchanges.Loader.ToString(), ExchangeType.Direct, true);
 
-            var queues = _channel.QueueDeclare();
+            var queues = _channel.QueueDeclare("LoaderQueue");
             _channel.QueueBind(queues.QueueName, Exchanges.Loader.ToString(), "");
 
             var consumer = new AsyncEventingBasicConsumer(_channel);

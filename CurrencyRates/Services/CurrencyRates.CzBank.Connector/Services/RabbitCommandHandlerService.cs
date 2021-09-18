@@ -23,18 +23,21 @@ namespace CurrencyRates.CzBank.Connector.Services
         private readonly AddNewJobModel _registerSettings;
         private readonly ILogger<RabbitCommandHandlerService> _logger;
         private readonly IClientConnectorService _clientConnectorService;
+        private readonly IDataCommandSender _commandSender;
         private IConnection _connection;
         private IModel _channel;
 
         public RabbitCommandHandlerService(IOptions<RabbitSettings> options,
             IOptions<AddNewJobModel> registerSettings,
             ILogger<RabbitCommandHandlerService> logger,
-            IClientConnectorService clientConnectorService)
+            IClientConnectorService clientConnectorService,
+            IDataCommandSender commandSender)
         {
             _options = options.Value ?? throw new ArgumentNullException(nameof(options));
             _registerSettings = registerSettings.Value ?? throw new ArgumentNullException(nameof(registerSettings));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _clientConnectorService = clientConnectorService ?? throw new ArgumentNullException(nameof(clientConnectorService));
+            _commandSender = commandSender ?? throw new ArgumentNullException(nameof(commandSender));
         }
 
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
@@ -83,16 +86,16 @@ namespace CurrencyRates.CzBank.Connector.Services
         }
 
         /// <summary>
-        /// TODO
+        /// Switching between incoming commands 
         /// </summary>
-        /// <param name="command">Type of command for execurion</param>
-        /// <returns>TODO</returns>
+        /// <param name="command">Type of command for execution</param>
         private async Task ExecuteCommand(string command)
         {
             switch (command)
             {
                 case "Download":
-                    var foo = await _clientConnectorService.DownloadDataDailyAsync(DateTime.Now);
+                    var currencyRatesResponse = await _clientConnectorService.DownloadDataDailyAsync(DateTime.UtcNow);
+                    _commandSender.SendDataToLoader(currencyRatesResponse); 
                     break;
                 case "StoreDate":
                     Store();

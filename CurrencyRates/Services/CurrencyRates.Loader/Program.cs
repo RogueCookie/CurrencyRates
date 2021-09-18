@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using CurrencyRates.Core;
 using CurrencyRates.Core.Models;
 using CurrencyRates.Loader.Services;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
@@ -23,7 +25,8 @@ namespace CurrencyRates.Loader
                     _configuration = builderContext.Configuration;
 
                     services.Configure<RabbitSettings>(_configuration.GetSection("RabbitSettings"));
-                    services.AddSingleton<RabbitService>();
+                    services.AddHostedService<RabbitCommandHandlerService>();
+                    services.AddMediatR(Assembly.GetExecutingAssembly());
 
                     // Configure serilog. to create the serilog logger, based on the configuration provided in appsettings.json
                     // provides a fluent interface for building a logging pipeline
@@ -43,11 +46,7 @@ namespace CurrencyRates.Loader
                     });
                 });
 
-            await host.RunAsync((serviceProvider) =>
-            {
-                var eventBus = serviceProvider.GetRequiredService<RabbitService>();
-                eventBus.Start();
-            });
+            await host.RunAsync((serviceProvider) => { });
         }
     }
 }

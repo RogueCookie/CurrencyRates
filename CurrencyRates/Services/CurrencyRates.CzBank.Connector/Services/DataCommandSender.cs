@@ -24,7 +24,7 @@ namespace CurrencyRates.CzBank.Connector.Services
         }
 
         ///<inheritdoc />
-        public void SendDataToLoader(TimedCurrencyRatesModel timedCurrencyRatesModel)
+        public void SendDataToLoader(TimedCurrencyRatesModel timedCurrencyRatesModel, string correlationId)
         {
             var factory = new ConnectionFactory
             {
@@ -36,28 +36,27 @@ namespace CurrencyRates.CzBank.Connector.Services
             };
             _connection = factory.CreateConnection(clientProvidedName: "Cz Bank Connector publisher");
             _channel = _connection.CreateModel();
-
-            using var connection = factory.CreateConnection();
-            using var channel = connection.CreateModel();
-            Publish(timedCurrencyRatesModel);
+            Publish(timedCurrencyRatesModel, correlationId);
         }
 
         /// <summary>
         /// Send data to Exchange Loader
         /// </summary>
-        /// <param name="model">Common AMQP model</param>
         /// <param name="timedCurrencyRatesModel">Data of currency rates in some time range</param>
-        private void Publish(TimedCurrencyRatesModel timedCurrencyRatesModel)
+        /// <param name="correlationId"></param>
+        private void Publish(TimedCurrencyRatesModel timedCurrencyRatesModel, string correlationId)
         {
             try
             {
                 var serializedData = JsonConvert.SerializeObject(timedCurrencyRatesModel);
                 var dataInBytes = Encoding.UTF8.GetBytes(serializedData);
-                _channel.BasicPublish(exchange: Exchanges.Loader.ToString(), routingKey: "", basicProperties: null, body: dataInBytes);
+                var properties = _channel.CreateBasicProperties();
+                properties.CorrelationId = correlationId;
+                _channel.BasicPublish(exchange: Exchanges.Loader.ToString(), routingKey: "", basicProperties: properties, body: dataInBytes);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An exception occurred during attempt to publish message to exchange Loader {ex} at {DateTime.Now}");
+                _logger.LogError(ex,$"An exception occurred during attempt to publish message to exchange Loader", correlationId);
             }
             
         }

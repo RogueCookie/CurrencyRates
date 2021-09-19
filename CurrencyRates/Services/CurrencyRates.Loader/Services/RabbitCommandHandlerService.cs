@@ -66,7 +66,8 @@ namespace CurrencyRates.Loader.Services
             }
             catch (BrokerUnreachableException ex)
             {
-                // apply retry logic helthcheck TODO все плохо перезапусти сервис
+                // apply retry logic helthcheck TODO everithing bad, restart service
+                //TODO 
             }
         }
 
@@ -87,11 +88,13 @@ namespace CurrencyRates.Loader.Services
             {
                 var body = args.Body;
                 var message = Encoding.UTF8.GetString(body.ToArray());
-                _logger.LogInformation($"");//TODO
+
+                _logger.LogInformation($"Consume new message", args.BasicProperties.CorrelationId);
 
                 var result = await _mediator.Send(new ValidateResponseModel()
                 {
-                    Message = message
+                    Message = message,
+                    CorrelationId = args.BasicProperties.CorrelationId
                 }, cancellationToken);
 
                 if (result == null)

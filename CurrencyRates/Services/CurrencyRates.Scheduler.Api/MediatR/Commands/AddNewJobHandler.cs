@@ -31,7 +31,7 @@ namespace CurrencyRates.Scheduler.Api.MediatR.Commands
         /// </summary>
         public Task<Unit> Handle(AddNewJob request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"reccuring job was started");
+            _logger.LogInformation("Reccuring job was started", request.CorrelationId);
             RecurringJob.AddOrUpdate(request.JobName, () => Send(request), request.CronScheduler);
             return Unit.Task;
         }
@@ -43,7 +43,8 @@ namespace CurrencyRates.Scheduler.Api.MediatR.Commands
                 Version = request.Version,
                 Command = request.Command,
                 RoutingKey = request.RoutingKey,
-                JobName = request.JobName
+                JobName = request.JobName,
+                CorrelationId = Guid.NewGuid().ToString()
             }).GetAwaiter().GetResult();
         }
     }

@@ -34,5 +34,10 @@
         /// Cron settings (time period for execution)
         /// </summary>
         public string CronScheduler { get; set; }
+
+        /// <summary>
+        /// Id for end-to-end logging
+        /// </summary>
+        public string CorrelationId { get; set; }
     }
 }

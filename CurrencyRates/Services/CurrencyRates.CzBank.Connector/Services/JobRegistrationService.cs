@@ -71,9 +71,14 @@ namespace CurrencyRates.CzBank.Connector.Services
             var messageToBytes = Encoding.UTF8.GetBytes(message);
 
             channel.ExchangeDeclare(exchange: Exchanges.Scheduler.ToString(), type: ExchangeType.Direct);
+
+            var properties = channel.CreateBasicProperties();
+            properties.CorrelationId = Guid.NewGuid().ToString();
+
             channel.BasicPublish(
                 exchange:Exchanges.Scheduler.ToString(),
                 routingKey: RoutingKeys.AddNewJob.ToString(),
+                basicProperties: properties,
                 body: messageToBytes);
         }
 

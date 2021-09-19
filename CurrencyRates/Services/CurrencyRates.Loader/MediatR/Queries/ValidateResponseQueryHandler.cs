@@ -15,6 +15,11 @@ namespace CurrencyRates.Loader.MediatR.Queries
         /// то что пришлро
         /// </summary>
         public string Message { get; set; }
+
+        /// <summary>
+        /// Id of job for end-to-end logging
+        /// </summary>
+        public string CorrelationId { get; set; }
     }
 
     public class ValidateResponseQueryHandler : IRequestHandler<ValidateResponseModel, TimedCurrencyRatesModel>
@@ -30,7 +35,7 @@ namespace CurrencyRates.Loader.MediatR.Queries
         {
             if (request.Message == null)
             {
-                _logger.LogError($"{request.Message} cannot be null");
+                _logger.LogError($"{request.Message} cannot be null", request.CorrelationId);
                 return null;
             }
 
@@ -40,7 +45,7 @@ namespace CurrencyRates.Loader.MediatR.Queries
 
                 if (!_availableMessageVersions.Contains(deserializeModel?.Version))
                 {
-                    _logger.LogWarning($"Unsupported version of message {deserializeModel?.Version} from {deserializeModel?.SourceName}");
+                    _logger.LogWarning($"Unsupported version of message {deserializeModel?.Version} from {deserializeModel?.SourceName}", request.CorrelationId);
                     return null;
                 }
 
@@ -49,7 +54,7 @@ namespace CurrencyRates.Loader.MediatR.Queries
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception,"Unable to deserialize message at exception");
+                _logger.LogError(exception,"Unable to deserialize message at exception", request.CorrelationId);
                 return null;
             }
         }

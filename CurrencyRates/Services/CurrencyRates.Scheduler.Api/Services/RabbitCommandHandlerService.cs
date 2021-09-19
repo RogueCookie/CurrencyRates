@@ -57,7 +57,7 @@ namespace CurrencyRates.Scheduler.Api.Services
             var message = Encoding.UTF8.GetString(body.ToArray());
             try
             {
-                _logger.LogInformation($"Scheduler consume {e.RoutingKey} Received {message}");
+                _logger.LogInformation($"Scheduler consume {e.RoutingKey} Received {message} with correlation_id {e.BasicProperties.CorrelationId}");
                 var commandModel = JsonConvert.DeserializeObject<AddNewJobModel>(message);
                 _mediator.Send(new AddNewJob()
                 {
@@ -66,7 +66,8 @@ namespace CurrencyRates.Scheduler.Api.Services
                     Version = commandModel.Version,
                     Command = commandModel.Command,
                     CronScheduler = commandModel.CronScheduler,
-                    IsEnabled = commandModel.IsEnabled
+                    IsEnabled = commandModel.IsEnabled,
+                    CorrelationId = e.BasicProperties.CorrelationId
                 });
                 _channel?.BasicAck(e.DeliveryTag, false);
             }

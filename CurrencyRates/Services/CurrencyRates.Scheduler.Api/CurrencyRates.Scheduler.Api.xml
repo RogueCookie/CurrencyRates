@@ -10,11 +10,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:CurrencyRates.Scheduler.Api.Enums.RoutingKey">
-            <summary>
-            Key used for binding queue with exchanges
-            </summary>
-        </member>
         <member name="T:CurrencyRates.Scheduler.Api.Extensions.SwaggerExtension">
             <summary>
             Swagger set up. Implementation of Swagger settings
@@ -51,8 +46,8 @@
             <summary>
             Send command by mediator
             </summary>
-            <param name="request"></param>
-            <param name="cancellationToken"></param>
+            <param name="request">Kind of command for being send</param>
+            <param name="cancellationToken">Token for stopping execution</param>
         </member>
         <member name="T:CurrencyRates.Scheduler.Api.Models.JobOption">
             <summary>

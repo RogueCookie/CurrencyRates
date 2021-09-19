@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using CurrencyRates.Core.Models;
+﻿using CurrencyRates.Core.Models;
 
 namespace CurrencyRates.CzBank.Connector.Interfaces
 {
@@ -12,7 +11,7 @@ namespace CurrencyRates.CzBank.Connector.Interfaces
         /// Send data to Exchange Loader
         /// </summary>
         /// <param name="timedCurrencyRatesModel">Prepared data from the client</param>
-        /// <returns></returns>//TODO
-        void SendDataToLoader(TimedCurrencyRatesModel timedCurrencyRatesModel);
+        /// <param name="correlationId">Id of particular job for end-to-end logging</param>
+        void SendDataToLoader(TimedCurrencyRatesModel timedCurrencyRatesModel, string correlationId);
     }
 }

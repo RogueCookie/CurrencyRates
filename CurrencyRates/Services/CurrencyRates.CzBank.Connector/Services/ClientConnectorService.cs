@@ -28,11 +28,11 @@ namespace CurrencyRates.CzBank.Connector.Services
         {
             // take free client from the factory
             _httpClient = httpClientFactory.CreateClient(HttpClientConstants.Daily);
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = logger;
         }
 
         /// <inheritdoc />
-        public async Task<TimedCurrencyRatesModel> DownloadDataDailyAsync(DateTime date)
+        public async Task<TimedCurrencyRatesModel> DownloadDataDailyAsync(DateTime date, string correlationId)
         {
             try
             {
@@ -40,9 +40,10 @@ namespace CurrencyRates.CzBank.Connector.Services
 
                 TextReader textReader = new StringReader(response);
 
-                var dailyRequestData = await textReader.ReadLineAsync();
+                //allow to clean first row with wrong data
+                await textReader.ReadLineAsync();
 
-                _logger.LogInformation($"Received data from provider at {DateTime.Now}");
+                _logger.LogInformation($"Received data from provider at {DateTime.Now} with message response {response}", correlationId);
 
                 var csvReader = new CsvReader(textReader, new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
@@ -57,7 +58,7 @@ namespace CurrencyRates.CzBank.Connector.Services
             }
             catch (Exception exception)
             {
-                _logger.LogError("Czech Bank Connector Request error {Message}", exception.Message);
+                _logger.LogError(exception,"Czech Bank Connector Request error", correlationId);
                 throw;
             }
         }

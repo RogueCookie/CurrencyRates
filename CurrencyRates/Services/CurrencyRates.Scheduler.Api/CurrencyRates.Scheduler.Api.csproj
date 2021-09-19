@@ -18,6 +18,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MediatR\Models\**" />
+    <Compile Remove="MediatR\Queries\**" />
+    <Content Remove="MediatR\Models\**" />
+    <Content Remove="MediatR\Queries\**" />
+    <EmbeddedResource Remove="MediatR\Models\**" />
+    <EmbeddedResource Remove="MediatR\Queries\**" />
+    <None Remove="MediatR\Models\**" />
+    <None Remove="MediatR\Queries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.24" />
     <PackageReference Include="Hangfire.PostgreSql" Version="1.8.6" />
     <PackageReference Include="MediatR" Version="9.0.0" />
@@ -26,11 +37,6 @@
     <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.1.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MediatR\Models\" />
-    <Folder Include="MediatR\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

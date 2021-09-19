@@ -78,24 +78,30 @@ namespace CurrencyRates.CzBank.Connector.Services
                 var body = args.Body;
                 var message = Encoding.UTF8.GetString(body.ToArray());
                 var commandModel = JsonConvert.DeserializeObject<AddNewJobModel>(message);
-                await ExecuteCommand(commandModel?.Command);
-                _logger.LogInformation($"Consumer {queueName} with mes {message}");
+                if (commandModel == null)
+                {
+                    _logger.LogError($"Cannot deserialized model for message {message}", args.BasicProperties.CorrelationId);
+                    return;
+                }
+                commandModel.CorrelationId = args.BasicProperties.CorrelationId;
+
+                await ExecuteCommand(commandModel);
+                _logger.LogInformation($"Consumer {queueName} with mes {message}", args.BasicProperties.CorrelationId);
             };
             _channel.BasicConsume(queueName, consumer: consumer, autoAck: false);
-            _logger.LogInformation("Cz Bank connector get command from scheduler");
         }
 
         /// <summary>
         /// Switching between incoming commands 
         /// </summary>
         /// <param name="command">Type of command for execution</param>
-        private async Task ExecuteCommand(string command)
+        private async Task ExecuteCommand(AddNewJobModel command)
         {
-            switch (command)
+            switch (command.Command)
             {
                 case "Download":
-                    var currencyRatesResponse = await _clientConnectorService.DownloadDataDailyAsync(DateTime.UtcNow);
-                    _commandSender.SendDataToLoader(currencyRatesResponse); 
+                    var currencyRatesResponse = await _clientConnectorService.DownloadDataDailyAsync(DateTime.UtcNow, command.CorrelationId);
+                    _commandSender.SendDataToLoader(currencyRatesResponse, command.CorrelationId); 
                     break;
                 case "StoreDate":
                     Store();

@@ -13,6 +13,8 @@ services:
       - cr
     ports:
       - 86:80
+    depends_on:
+      - elasticsearch
 
   cr_scheduler:
     image: ${DOCKER_REGISTRY}/cr_scheduler:${TAG}
@@ -25,6 +27,7 @@ services:
       - 84:80
     depends_on:
       - cr_rabbitmq
+      - elasticsearch
    
   cr_loader:
     image: ${DOCKER_REGISTRY}/cr_loader:${TAG}
@@ -34,6 +37,8 @@ services:
     networks:
       - cr
     restart: on-failure
+    depends_on:
+      - elasticsearch
 
   cr_czbank_connector:
     image: ${DOCKER_REGISTRY}/cr_czbank_connector:${TAG}
@@ -45,12 +50,13 @@ services:
     restart: on-failure
     depends_on:
       - cr_scheduler
+      - elasticsearch
 
   cr_rabbitmq:
     container_name: cr_rabbitmq_container
     image: rabbitmq:3.8.11-management
     networks:
-     - cr
+      - cr
     ports:
       - 85:15672
     restart: on-failure
@@ -59,14 +65,37 @@ services:
     container_name: cr_postgres_container
     image: postgres:13.1 
     networks:
-     - cr
+      - cr
     restart: on-failure
 
   cr_pgadmin4:
     container_name: cr_pgadmin4_container
     image: dpage/pgadmin4:latest
     networks:
-     - cr
+      - cr
     ports:
       - 8086:80
     restart: on-failure
+
+  elasticsearch:
+    container_name: cr_elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    environment:
+      - xpack.monitoring.enabled=true
+      - xpack.watcher.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    networks:
+      - cr
+
+  cr_kibana:
+    container_name: cr_kibana
+    image: docker.elastic.co/kibana/kibana:7.6.2
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    networks:
+      - cr

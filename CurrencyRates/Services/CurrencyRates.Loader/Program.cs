@@ -1,14 +1,13 @@
-﻿using System;
-using System.Reflection;
-using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
-using Autofac.Extensions.DependencyInjection;
+﻿using Autofac.Extensions.DependencyInjection;
 using CurrencyRates.Core;
 using CurrencyRates.Core.Models;
 using CurrencyRates.Loader.Services;
+using CurrencyRates.Logging;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace CurrencyRates.Loader
 {
@@ -24,19 +23,14 @@ namespace CurrencyRates.Loader
                 {
                     _configuration = builderContext.Configuration;
 
+                   // services.AddHostedService<MigrationInitService>();
                     services.Configure<RabbitSettings>(_configuration.GetSection("RabbitSettings"));
                     services.AddHostedService<RabbitCommandHandlerService>();
                     services.AddMediatR(Assembly.GetExecutingAssembly());
 
                     // Configure serilog. to create the serilog logger, based on the configuration provided in appsettings.json
                     // provides a fluent interface for building a logging pipeline
-                    var logger = new LoggerConfiguration()
-                        .Enrich.FromLogContext()
-                        .WriteTo.Console()
-                        .CreateLogger();
-
-                    services.AddLogging(loggingBuilder =>
-                        loggingBuilder.AddSerilog(logger));
+                    services.AddSerilogLogging(_configuration);
                 },
                 (services) =>
                 {

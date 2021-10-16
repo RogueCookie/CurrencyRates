@@ -1,8 +1,11 @@
-using System;
+using CurrencyRates.Core.Models;
+using CurrencyRates.Logging;
 using CurrencyRates.Scheduler.Api.Extensions;
+using CurrencyRates.Scheduler.Api.Services;
 using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.PostgreSql;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -13,9 +16,6 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
-using CurrencyRates.Core.Models;
-using CurrencyRates.Scheduler.Api.Services;
-using MediatR;
 
 namespace CurrencyRates.Scheduler.Api
 {
@@ -25,7 +25,7 @@ namespace CurrencyRates.Scheduler.Api
 
         public Startup(IConfiguration configuration)
         {
-           _configuration = configuration;
+            _configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -43,6 +43,8 @@ namespace CurrencyRates.Scheduler.Api
             services.Configure<RabbitSettings>(_configuration.GetSection("RabbitSettings"));
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddHostedService<RabbitCommandHandlerService>();
+            
+            services.AddSerilogLogging(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,7 +77,7 @@ namespace CurrencyRates.Scheduler.Api
                 IgnoreAntiforgeryToken = true,
                 Authorization = new List<IDashboardAuthorizationFilter>() { }
             });
-           
+
             //backgroundJobClient.Enqueue(() => Console.WriteLine("Hello, how are you"));
 
             app.UseAuthorization();

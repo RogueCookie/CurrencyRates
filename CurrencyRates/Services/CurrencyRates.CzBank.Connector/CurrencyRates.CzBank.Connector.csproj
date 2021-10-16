@@ -32,10 +32,12 @@
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\CurrencyRates.Core\CurrencyRates.Core.csproj" />
+    <ProjectReference Include="..\..\Core\CurrencyRates.Logging\CurrencyRates.Logging.csproj" />
   </ItemGroup>
 
   <ItemGroup>

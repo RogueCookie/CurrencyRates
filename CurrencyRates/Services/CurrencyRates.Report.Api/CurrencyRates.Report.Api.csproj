@@ -23,4 +23,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.1.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CurrencyRates.Logging\CurrencyRates.Logging.csproj" />
+  </ItemGroup>
+
 </Project>

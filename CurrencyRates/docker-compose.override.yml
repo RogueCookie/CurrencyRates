@@ -19,6 +19,7 @@ services:
       - RabbitSettings__Port
       - RabbitSettings__Login
       - RabbitSettings__Password
+      - ConnectionStrings__LoaderDbConnection
 
   cr_czbank_connector:
     environment:

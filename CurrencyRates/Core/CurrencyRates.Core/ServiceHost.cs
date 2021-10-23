@@ -1,17 +1,19 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CurrencyRates.Core
 {
+    /// <summary>
+    /// Initialization DI with getting Configuration on
+    /// </summary>
     public class ServiceHost : IDisposable
     {
-        private IHostBuilder _hostBuilder;
         private readonly string[] _args;
         private readonly Action<IHostBuilder> _configureHostBuilder;
         private IHost _host;
@@ -22,27 +24,29 @@ namespace CurrencyRates.Core
             _configureHostBuilder = configureHostBuilder;
         }
 
+        public IHostBuilder HostBuilder { get; private set;  }
+
         public ServiceHost ConfigureServices<TContainerBuilder>(
             Action<HostBuilderContext, IServiceCollection> configureServices = null,
             Func<IServiceCollection, IServiceProviderFactory<TContainerBuilder>> configureServiceProvider = null,
             Action<HostBuilderContext, TContainerBuilder> configureContainer = null
         ) where TContainerBuilder : class
         {
-            _hostBuilder = CreateHostBuilder((context, services) =>
+            HostBuilder = CreateHostBuilder((context, services) =>
             {
                 configureServices?.Invoke(context, services);
             });
             if (configureContainer != null)
             {
-                _hostBuilder.ConfigureContainer(configureContainer);
+                HostBuilder.ConfigureContainer(configureContainer);
             }
-
+            
             return this;
         }
 
         public async Task RunAsync(Action<IServiceProvider> configure = null)
         {
-            _host = _hostBuilder.Build();
+            _host = HostBuilder.Build();
             configure?.Invoke(_host.Services);
 
             var isService = !(Debugger.IsAttached || _args.Contains("--console"));
@@ -50,10 +54,10 @@ namespace CurrencyRates.Core
             {
                 var pathToExe = Process.GetCurrentProcess().MainModule?.FileName;
                 var pathToContentRoot = Path.GetDirectoryName(pathToExe);
-                _hostBuilder.UseContentRoot(pathToContentRoot);
+                HostBuilder.UseContentRoot(pathToContentRoot);
             }
 
-            _configureHostBuilder?.Invoke(_hostBuilder);
+            _configureHostBuilder?.Invoke(HostBuilder);
             await _host.RunAsync();
         }
 
@@ -61,7 +65,7 @@ namespace CurrencyRates.Core
         /// Allow to read parameters appsettings.json and the parameters were
         /// overwritten with parameters that are passed to the docker compose file
         /// </summary>
-        private IHostBuilder CreateHostBuilder(Action<HostBuilderContext, IServiceCollection> configureServices = null)
+        public IHostBuilder CreateHostBuilder(Action<HostBuilderContext, IServiceCollection> configureServices = null)
         {
             var builder = new HostBuilder()
                 .ConfigureAppConfiguration((context, config) =>

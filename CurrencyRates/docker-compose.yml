@@ -28,6 +28,7 @@ services:
     depends_on:
       - cr_rabbitmq
       - elasticsearch
+      - cr_postgres
    
   cr_loader:
     image: ${DOCKER_REGISTRY}/cr_loader:${TAG}
@@ -39,6 +40,7 @@ services:
     restart: on-failure
     depends_on:
       - elasticsearch
+      - cr_postgres
 
   cr_czbank_connector:
     image: ${DOCKER_REGISTRY}/cr_czbank_connector:${TAG}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CurrencyRates.Core.Enums;
+using System.Collections.Generic;
 
 namespace CurrencyRates.Loader.DAL.Model
 {
@@ -15,10 +16,19 @@ namespace CurrencyRates.Loader.DAL.Model
         /// <summary>
         /// Shortcut of currency
         /// </summary>
-        public string CurrencyAlias { get; set; }
+        public TypeOfCurrency Alias { get; set; }
 
-        public virtual IEnumerable<CurrencyRatesDaily> CurrencyRatesDailies { get; set; }
+        /// <summary>
+        /// Country of the currency
+        /// </summary>
+        public string OriginalCountry { get; set; }
 
-        public virtual IEnumerable<CurrencyRatesWeekly> CurrencyRatesWeeklies { get; set; }
+        public virtual IEnumerable<CurrencyRatesDaily> RatesDaily { get; set; }
+
+        public virtual IEnumerable<CurrencyRatesWeekly> RatesWeekly { get; set; }
+
+        public virtual IEnumerable<CurrencyRatesDaily> BaseRatesDaily { get; set; }
+
+        public virtual IEnumerable<CurrencyRatesWeekly> BaseRatesWeekly { get; set; }
     }
 }

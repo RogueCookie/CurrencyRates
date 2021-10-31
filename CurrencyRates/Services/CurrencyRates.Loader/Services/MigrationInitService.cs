@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace CurrencyRates.Loader.Services
 {
     /// <summary>
-    /// При первом старте накатывает миграции на бд если ее нет
+    /// At the first start, rolls migrations to the database if it is not exist 
     /// </summary>
     public class MigrationInitService : IHostedService
     {

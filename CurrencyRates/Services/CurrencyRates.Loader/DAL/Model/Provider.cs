@@ -22,8 +22,8 @@ namespace CurrencyRates.Loader.DAL.Model
         /// </summary>
         public string Description { get; set; }
 
-        public virtual IEnumerable<CurrencyRatesDaily> CurrencyRatesDailies { get; set; }
+        public virtual IEnumerable<CurrencyRatesDaily> RatesDaily { get; set; }
 
-        public virtual IEnumerable<CurrencyRatesWeekly> CurrencyRatesWeeklies { get; set; }
+        public virtual IEnumerable<CurrencyRatesWeekly> RatesWeekly { get; set; }
     }
 }

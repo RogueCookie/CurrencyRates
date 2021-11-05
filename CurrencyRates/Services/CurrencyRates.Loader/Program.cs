@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
 using System.Threading.Tasks;
+using CurrencyRates.Loader.DAL.Repositories;
 
 namespace CurrencyRates.Loader
 {
@@ -38,7 +39,7 @@ namespace CurrencyRates.Loader
                 {
                     _configuration = builderContext.Configuration;
                     
-                    // services.AddHostedService<MigrationInitService>();
+                    services.AddHostedService<MigrationInitService>();
                     services.Configure<RabbitSettings>(_configuration.GetSection("RabbitSettings"));
                     services.AddHostedService<RabbitCommandHandlerService>();
                     services.AddMediatR(Assembly.GetExecutingAssembly());
@@ -51,11 +52,11 @@ namespace CurrencyRates.Loader
 
                     services.AddDbContext<LoaderContext>(options => options
                         .UseNpgsql(connection, x => x.MigrationsHistoryTable("_migrations_history", "loader"))
-                        .UseSnakeCaseNamingConvention());
+                        .UseSnakeCaseNamingConvention()
+                        .EnableSensitiveDataLogging());
 
-                    services.AddHostedService<MigrationInitService>();
-
-
+                    services.AddTransient<ICurrencyDailyRepository, CurrencyDailyRepository>();
+                    services.AddTransient<IProviderRepository, ProviderRepository>();
                 },
                 (services) =>
                 {

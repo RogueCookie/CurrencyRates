@@ -12,7 +12,7 @@ namespace CurrencyRates.Loader.MediatR.Queries
     public class ValidateResponseModel : IRequest<TimedCurrencyRatesModel>
     {
         /// <summary>
-        /// то что пришлро
+        /// Data from queue. What come
         /// </summary>
         public string Message { get; set; }
 
@@ -25,6 +25,10 @@ namespace CurrencyRates.Loader.MediatR.Queries
     public class ValidateResponseQueryHandler : IRequestHandler<ValidateResponseModel, TimedCurrencyRatesModel>
     {
         private readonly ILogger _logger;
+
+        /// <summary>
+        /// used for canary deploy 
+        /// </summary>
         private readonly List<string> _availableMessageVersions = new() { "1.0", "0.1", "0.3"};
 
         public ValidateResponseQueryHandler(ILogger<ValidateResponseModel> logger)

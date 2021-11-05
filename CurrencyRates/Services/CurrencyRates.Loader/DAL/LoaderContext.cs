@@ -3,6 +3,7 @@ using CurrencyRates.Loader.DAL.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using CurrencyRates.Core.Extensions;
 
 namespace CurrencyRates.Loader.DAL
 {
@@ -31,6 +32,8 @@ namespace CurrencyRates.Loader.DAL
                 .HasConversion(
                     i => i.ToString(),
                     i => (TypeOfCurrency) Enum.Parse(typeof(TypeOfCurrency), i));
+
+            modelBuilder.Entity<CurrencyRatesDaily>().HasIndex(x => new{x.CurrencyId, x.ProviderId, x.DateTime, x.CurrencyBaseId, x.CurrencyRate}).IsUnique();
 
 
             modelBuilder.Entity<CurrencyRatesWeekly>().HasKey(x => x.Id);
@@ -74,8 +77,10 @@ namespace CurrencyRates.Loader.DAL
             var currencies = Enum.GetValues(typeof(TypeOfCurrency)).OfType<TypeOfCurrency>().Select(x => new Currency()
             {
                 Alias = x,
-                Id = (int) x
-            });
+                Id = (int) x,
+                OriginalCountry = x.GetEnumDescription(),
+                FullNameOfCurrency = x.GetFullName()
+        });
 
             modelBuilder.Entity<Currency>().HasData(currencies);
 

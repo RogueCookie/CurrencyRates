@@ -67,7 +67,7 @@ namespace CurrencyRates.CzBank.Connector.Services
             _channel = _connection.CreateModel();
             _channel.ExchangeDeclare(Exchanges.Scheduler.ToString(), ExchangeType.Direct);
 
-            var queueName = "Execute.Job.CzBank";
+            var queueName = "conector_cz_bank";
             _channel.QueueDeclare(queueName, exclusive: false, durable: true, autoDelete: false);
             _channel.BasicQos(0, 1, false);
             _channel.QueueBind(queueName, Exchanges.Scheduler.ToString(), _registerSettings.RoutingKey);
@@ -87,6 +87,7 @@ namespace CurrencyRates.CzBank.Connector.Services
 
                 await ExecuteCommand(commandModel);
                 _logger.LogInformation($"Consumer {queueName} with mes {message}", args.BasicProperties.CorrelationId);
+                _channel?.BasicAck(args.DeliveryTag, false);
             };
             _channel.BasicConsume(queueName, consumer: consumer, autoAck: false);
         }

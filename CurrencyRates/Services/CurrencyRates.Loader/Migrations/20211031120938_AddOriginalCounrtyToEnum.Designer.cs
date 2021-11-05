@@ -3,15 +3,17 @@ using System;
 using CurrencyRates.Loader.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CurrencyRates.Loader.Migrations
 {
     [DbContext(typeof(LoaderContext))]
-    partial class LoaderContextModelSnapshot : ModelSnapshot
+    [Migration("20211031120938_AddOriginalCounrtyToEnum")]
+    partial class AddOriginalCounrtyToEnum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,10 +33,6 @@ namespace CurrencyRates.Loader.Migrations
                         .HasColumnType("text")
                         .HasColumnName("alias");
 
-                    b.Property<string>("FullNameOfCurrency")
-                        .HasColumnType("text")
-                        .HasColumnName("full_name_of_currency");
-
                     b.Property<string>("OriginalCountry")
                         .HasColumnType("text")
                         .HasColumnName("original_country");
@@ -53,238 +51,204 @@ namespace CurrencyRates.Loader.Migrations
                         {
                             Id = 1,
                             Alias = "AUD",
-                            FullNameOfCurrency = "Australia dollar",
                             OriginalCountry = "Australia"
                         },
                         new
                         {
                             Id = 2,
                             Alias = "BRL",
-                            FullNameOfCurrency = "Brazil real",
                             OriginalCountry = "Brazil"
                         },
                         new
                         {
                             Id = 3,
                             Alias = "BGN",
-                            FullNameOfCurrency = "Bulgaria lev",
                             OriginalCountry = "Bulgaria"
                         },
                         new
                         {
                             Id = 4,
                             Alias = "CAD",
-                            FullNameOfCurrency = "Canada dollar",
                             OriginalCountry = "Canada"
                         },
                         new
                         {
                             Id = 5,
                             Alias = "CNY",
-                            FullNameOfCurrency = "China renminbi",
                             OriginalCountry = "China"
                         },
                         new
                         {
                             Id = 6,
                             Alias = "HRK",
-                            FullNameOfCurrency = "Croatia kuna",
                             OriginalCountry = "Croatia"
                         },
                         new
                         {
                             Id = 7,
                             Alias = "DKK",
-                            FullNameOfCurrency = "Denmark krone",
                             OriginalCountry = "Denmark"
                         },
                         new
                         {
                             Id = 8,
                             Alias = "EUR",
-                            FullNameOfCurrency = "EMU euro",
                             OriginalCountry = "EMU"
                         },
                         new
                         {
                             Id = 9,
                             Alias = "HKD",
-                            FullNameOfCurrency = "Hongkong dollar",
                             OriginalCountry = "Hongkong"
                         },
                         new
                         {
                             Id = 10,
                             Alias = "HUF",
-                            FullNameOfCurrency = "Hungary forint",
                             OriginalCountry = "Hungary"
                         },
                         new
                         {
                             Id = 11,
                             Alias = "ISK",
-                            FullNameOfCurrency = "Iceland krona",
                             OriginalCountry = "Iceland"
                         },
                         new
                         {
                             Id = 12,
                             Alias = "XDR",
-                            FullNameOfCurrency = "IMF SDR",
                             OriginalCountry = "IMF"
                         },
                         new
                         {
                             Id = 13,
                             Alias = "INR",
-                            FullNameOfCurrency = "India rupee",
                             OriginalCountry = "India"
                         },
                         new
                         {
                             Id = 14,
                             Alias = "IDR",
-                            FullNameOfCurrency = "Indonesia rupiah",
                             OriginalCountry = "Indonesia"
                         },
                         new
                         {
                             Id = 15,
                             Alias = "ILS",
-                            FullNameOfCurrency = "Israel new shekel",
                             OriginalCountry = "Israel"
                         },
                         new
                         {
                             Id = 16,
                             Alias = "JPY",
-                            FullNameOfCurrency = "Japan yen",
                             OriginalCountry = "Japan"
                         },
                         new
                         {
                             Id = 17,
                             Alias = "MYR",
-                            FullNameOfCurrency = "Malaysia ringgit",
                             OriginalCountry = "Malaysia"
                         },
                         new
                         {
                             Id = 18,
                             Alias = "MXN",
-                            FullNameOfCurrency = "Mexico peso",
                             OriginalCountry = "Mexico"
                         },
                         new
                         {
                             Id = 19,
                             Alias = "NZD",
-                            FullNameOfCurrency = "New Zealand dollar",
                             OriginalCountry = "New Zealand"
                         },
                         new
                         {
                             Id = 20,
                             Alias = "NOK",
-                            FullNameOfCurrency = "Norway krone",
                             OriginalCountry = "Norway"
                         },
                         new
                         {
                             Id = 21,
                             Alias = "PHP",
-                            FullNameOfCurrency = "Philippines peso",
                             OriginalCountry = "Philippines"
                         },
                         new
                         {
                             Id = 22,
                             Alias = "PLN",
-                            FullNameOfCurrency = "Poland zloty",
                             OriginalCountry = "Poland"
                         },
                         new
                         {
                             Id = 23,
                             Alias = "RON",
-                            FullNameOfCurrency = "Romania leu",
                             OriginalCountry = "Romania"
                         },
                         new
                         {
                             Id = 24,
                             Alias = "RUB",
-                            FullNameOfCurrency = "Russia rouble",
                             OriginalCountry = "Russia"
                         },
                         new
                         {
                             Id = 25,
                             Alias = "SGD",
-                            FullNameOfCurrency = "Singapore dollar",
                             OriginalCountry = "Singapore"
                         },
                         new
                         {
                             Id = 26,
                             Alias = "ZAR",
-                            FullNameOfCurrency = "South Africa rand",
                             OriginalCountry = "South Africa"
                         },
                         new
                         {
                             Id = 27,
                             Alias = "KRW",
-                            FullNameOfCurrency = "South Korea won",
                             OriginalCountry = "South Korea"
                         },
                         new
                         {
                             Id = 28,
                             Alias = "SEK",
-                            FullNameOfCurrency = "Sweden krona",
                             OriginalCountry = "Sweden"
                         },
                         new
                         {
                             Id = 29,
                             Alias = "CHF",
-                            FullNameOfCurrency = "Switzerland franc",
                             OriginalCountry = "Switzerland"
                         },
                         new
                         {
                             Id = 30,
                             Alias = "THB",
-                            FullNameOfCurrency = "Thailand baht",
                             OriginalCountry = "Thailand"
                         },
                         new
                         {
                             Id = 31,
                             Alias = "TRY",
-                            FullNameOfCurrency = "Turkey lira",
                             OriginalCountry = "Turkey"
                         },
                         new
                         {
                             Id = 32,
                             Alias = "GBP",
-                            FullNameOfCurrency = "United Kingdom pound",
                             OriginalCountry = "United Kingdom"
                         },
                         new
                         {
                             Id = 33,
                             Alias = "USD",
-                            FullNameOfCurrency = "USA dollar",
                             OriginalCountry = "USA"
                         },
                         new
                         {
                             Id = 35,
                             Alias = "CZH",
-                            FullNameOfCurrency = "Czech crown",
                             OriginalCountry = "Czech Republic"
                         });
                 });
@@ -323,12 +287,11 @@ namespace CurrencyRates.Loader.Migrations
                     b.HasIndex("CurrencyBaseId")
                         .HasDatabaseName("ix_currency_rates_dailies_currency_base_id");
 
+                    b.HasIndex("CurrencyId")
+                        .HasDatabaseName("ix_currency_rates_dailies_currency_id");
+
                     b.HasIndex("ProviderId")
                         .HasDatabaseName("ix_currency_rates_dailies_provider_id");
-
-                    b.HasIndex("CurrencyId", "ProviderId", "DateTime", "CurrencyBaseId", "CurrencyRate")
-                        .IsUnique()
-                        .HasDatabaseName("ix_currency_rates_dailies_currency_id_provider_id_date_time_cu");
 
                     b.ToTable("currency_rates_dailies");
                 });

@@ -12,6 +12,7 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CurrencyRates.Loader.MediatR.Commands;
 
 namespace CurrencyRates.Loader.Services
 {
@@ -91,17 +92,26 @@ namespace CurrencyRates.Loader.Services
 
                 _logger.LogInformation($"Consume new message", args.BasicProperties.CorrelationId);
 
-                var result = await _mediator.Send(new ValidateResponseModel()
+                var preparedDataForStoring = await _mediator.Send(new ValidateResponseModel()
                 {
                     Message = message,
                     CorrelationId = args.BasicProperties.CorrelationId
                 }, cancellationToken);
 
-                if (result == null)
+                if (preparedDataForStoring == null)
                 {
                     //dead letter queue //TODO
                     return;
                 }
+
+                await _mediator.Send(new StoreRates()
+                {
+                    TimedRates = preparedDataForStoring.TimedRates,
+                    SourceName = preparedDataForStoring.SourceName,
+                    Version = preparedDataForStoring.Version
+                }, cancellationToken);
+
+                _channel?.BasicAck(args.DeliveryTag, false);
             };
             _channel.BasicConsume(queues.QueueName, true, consumer);
         }

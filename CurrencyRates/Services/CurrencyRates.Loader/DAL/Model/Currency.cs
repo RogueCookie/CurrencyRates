@@ -23,6 +23,11 @@ namespace CurrencyRates.Loader.DAL.Model
         /// </summary>
         public string OriginalCountry { get; set; }
 
+        /// <summary>
+        /// Full name of currency
+        /// </summary>
+        public string FullNameOfCurrency { get; set; }
+
         public virtual IEnumerable<CurrencyRatesDaily> RatesDaily { get; set; }
 
         public virtual IEnumerable<CurrencyRatesWeekly> RatesWeekly { get; set; }

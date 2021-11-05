@@ -3,15 +3,17 @@ using System;
 using CurrencyRates.Loader.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CurrencyRates.Loader.Migrations
 {
     [DbContext(typeof(LoaderContext))]
-    partial class LoaderContextModelSnapshot : ModelSnapshot
+    [Migration("20211031123233_AddedFullNameCurrency")]
+    partial class AddedFullNameCurrency
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,7 +118,7 @@ namespace CurrencyRates.Loader.Migrations
                         {
                             Id = 10,
                             Alias = "HUF",
-                            FullNameOfCurrency = "Hungary forint",
+                            FullNameOfCurrency = "Iceland krona",
                             OriginalCountry = "Hungary"
                         },
                         new
@@ -323,12 +325,11 @@ namespace CurrencyRates.Loader.Migrations
                     b.HasIndex("CurrencyBaseId")
                         .HasDatabaseName("ix_currency_rates_dailies_currency_base_id");
 
+                    b.HasIndex("CurrencyId")
+                        .HasDatabaseName("ix_currency_rates_dailies_currency_id");
+
                     b.HasIndex("ProviderId")
                         .HasDatabaseName("ix_currency_rates_dailies_provider_id");
-
-                    b.HasIndex("CurrencyId", "ProviderId", "DateTime", "CurrencyBaseId", "CurrencyRate")
-                        .IsUnique()
-                        .HasDatabaseName("ix_currency_rates_dailies_currency_id_provider_id_date_time_cu");
 
                     b.ToTable("currency_rates_dailies");
                 });

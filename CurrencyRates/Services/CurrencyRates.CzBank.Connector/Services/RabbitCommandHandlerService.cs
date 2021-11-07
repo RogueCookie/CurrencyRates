@@ -43,7 +43,7 @@ namespace CurrencyRates.CzBank.Connector.Services
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            InitializeRabbitMQListener();
+            InitializeRabbitMQListener(cancellationToken);
             return Task.CompletedTask;
             
         }
@@ -52,7 +52,7 @@ namespace CurrencyRates.CzBank.Connector.Services
         /// <summary>
         /// Through one queue, the Scheduler will send a message (command) which work must be executed 
         /// </summary>
-        private void InitializeRabbitMQListener()
+        private void InitializeRabbitMQListener(CancellationToken cancellationToken)
         {
             var factory = new ConnectionFactory
             {
@@ -85,7 +85,7 @@ namespace CurrencyRates.CzBank.Connector.Services
                 }
                 commandModel.CorrelationId = args.BasicProperties.CorrelationId;
 
-                await ExecuteCommand(commandModel);
+                await ExecuteCommand(commandModel, cancellationToken);
                 _logger.LogInformation($"Consumer {queueName} with mes {message}", args.BasicProperties.CorrelationId);
                 _channel?.BasicAck(args.DeliveryTag, false);
             };
@@ -96,12 +96,13 @@ namespace CurrencyRates.CzBank.Connector.Services
         /// Switching between incoming commands 
         /// </summary>
         /// <param name="command">Type of command for execution</param>
-        private async Task ExecuteCommand(AddNewJobModel command)
+        /// <param name="cancellationToken">cancellation token</param>
+        private async Task ExecuteCommand(AddNewJobModel command, CancellationToken cancellationToken)
         {
             switch (command.Command)
             {
                 case "Download":
-                    var currencyRatesResponse = await _clientConnectorService.DownloadDataDailyAsync(DateTime.UtcNow, command.CorrelationId);
+                    var currencyRatesResponse = await _clientConnectorService.DownloadDataDailyAsync(DateTime.UtcNow, command.CorrelationId, cancellationToken);
                     _commandSender.SendDataToLoader(currencyRatesResponse, command.CorrelationId); 
                     break;
                 case "StoreDate":

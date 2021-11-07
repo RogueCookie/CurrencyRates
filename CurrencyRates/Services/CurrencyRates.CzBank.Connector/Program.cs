@@ -1,7 +1,6 @@
 ﻿using Autofac.Extensions.DependencyInjection;
 using CurrencyRates.Core;
 using CurrencyRates.Core.Models;
-using CurrencyRates.CzBank.Connector.Constants;
 using CurrencyRates.CzBank.Connector.Interfaces;
 using CurrencyRates.CzBank.Connector.Services;
 using CurrencyRates.Logging;
@@ -12,7 +11,6 @@ using Polly.Extensions.Http;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Serilog;
 
 namespace CurrencyRates.CzBank.Connector
 {
@@ -36,7 +34,7 @@ namespace CurrencyRates.CzBank.Connector
                 services.AddTransient<IDataCommandSender, DataCommandSender>();
                 services.AddHostedService<RabbitCommandHandlerService>();
 
-                services.AddHttpClient(HttpClientConstants.Daily, client =>
+                services.AddHttpClient(Constants.GeneralConstants.Daily, client =>
                 {
                     client.BaseAddress = new Uri("https://www.cnb.cz");
                 }).AddPolicyHandler(GetRetryPolicy());

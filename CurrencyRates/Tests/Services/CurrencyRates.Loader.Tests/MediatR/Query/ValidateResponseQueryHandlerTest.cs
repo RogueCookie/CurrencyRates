@@ -100,6 +100,5 @@ namespace CurrencyRates.Loader.Tests.MediatR.Query
 
             return request;
         }
-
     }
 }

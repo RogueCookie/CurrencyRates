@@ -29,6 +29,5 @@ namespace CurrencyRates.CzBank.Connector.Tests
 
             Assert.ThrowsAsync<ArgumentNullException>(ActAction);
         }
-
     }
 }

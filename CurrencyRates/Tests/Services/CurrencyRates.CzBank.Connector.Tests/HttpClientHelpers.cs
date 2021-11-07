@@ -1,11 +1,11 @@
 ﻿using CurrencyRates.CzBank.Connector.Interfaces;
+using CurrencyRates.CzBank.Connector.Services;
 using Moq;
 using System;
 using System.Net.Http;
-using CurrencyRates.CzBank.Connector.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CurrencyRates.CzBAnk.ConnectorTests
+namespace CurrencyRates.CzBank.Connector.Tests
 {
     public class HttpClientHelpers
     {

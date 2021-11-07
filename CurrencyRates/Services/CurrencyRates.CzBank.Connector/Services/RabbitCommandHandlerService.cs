@@ -119,13 +119,5 @@ namespace CurrencyRates.CzBank.Connector.Services
         {
             Console.WriteLine("Store");
         }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        private void Download()
-        {
-            Console.WriteLine("Download");
-        }
     }
 }

@@ -104,7 +104,7 @@ namespace CurrencyRates.Loader.Services
                     return;
                 }
 
-                await _mediator.Send(new StoreRates()
+                await _mediator.Send(new StoreRatesCommand()
                 {
                     TimedRates = preparedDataForStoring.TimedRates,
                     SourceName = preparedDataForStoring.SourceName,
@@ -113,7 +113,7 @@ namespace CurrencyRates.Loader.Services
 
                 _channel?.BasicAck(args.DeliveryTag, false);
             };
-            _channel.BasicConsume(queues.QueueName, true, consumer);
+            _channel.BasicConsume(queues.QueueName, false, consumer);
         }
     }
 }

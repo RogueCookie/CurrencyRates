@@ -34,6 +34,11 @@ namespace CurrencyRates.CzBank.Connector.Services
         /// <inheritdoc />
         public async Task<TimedCurrencyRatesModel> DownloadDataDailyAsync(DateTime date, string correlationId)
         {
+            if (date > DateTime.Now)
+            {
+                _logger.LogError("Received data from future is not allowed, parameter: {date}", date, correlationId);
+                throw new ArgumentNullException($"Received data from future is not allowed, parametr: {date}");
+            }
             try
             {
                 var response = await _httpClient.GetStringAsync($"{HttpClientConstants.AdditionalUrl}={date:dd.MM.YYYY}");
@@ -43,7 +48,7 @@ namespace CurrencyRates.CzBank.Connector.Services
                 //allow to clean first row with wrong data
                 await textReader.ReadLineAsync();
 
-                _logger.LogInformation($"Received data from provider at {DateTime.Now} with message response {response}", correlationId);
+                _logger.LogInformation("Received data from provider at {DateTime.Now} with message response {response}", DateTime.Now, response, correlationId);
 
                 var csvReader = new CsvReader(textReader, new CsvConfiguration(CultureInfo.InvariantCulture)
                 {

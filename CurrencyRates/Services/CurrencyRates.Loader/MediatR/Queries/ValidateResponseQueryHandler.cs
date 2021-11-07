@@ -40,7 +40,7 @@ namespace CurrencyRates.Loader.MediatR.Queries
             if (request.Message == null)
             {
                 _logger.LogError($"{request.Message} cannot be null", request.CorrelationId);
-                return null;
+                throw new ArgumentNullException($"{request.Message} cannot be null", request.CorrelationId);
             }
 
             try
@@ -50,7 +50,7 @@ namespace CurrencyRates.Loader.MediatR.Queries
                 if (!_availableMessageVersions.Contains(deserializeModel?.Version))
                 {
                     _logger.LogWarning($"Unsupported version of message {deserializeModel?.Version} from {deserializeModel?.SourceName}", request.CorrelationId);
-                    return null;
+                    throw new ArgumentNullException($"Unsupported version of message {deserializeModel?.Version} from {deserializeModel?.SourceName}", request.CorrelationId);
                 }
 
                 var timeRatesModel = JsonConvert.DeserializeObject<TimedCurrencyRatesModel>(request.Message);
@@ -59,7 +59,7 @@ namespace CurrencyRates.Loader.MediatR.Queries
             catch (Exception exception)
             {
                 _logger.LogError(exception,"Unable to deserialize message at exception", request.CorrelationId);
-                return null;
+                throw; 
             }
         }
     }

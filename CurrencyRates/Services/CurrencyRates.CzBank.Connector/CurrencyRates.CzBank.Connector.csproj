@@ -41,9 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Constants\" />
   </ItemGroup>
 
 </Project>

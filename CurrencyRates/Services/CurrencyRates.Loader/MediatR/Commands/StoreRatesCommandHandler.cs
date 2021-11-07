@@ -13,11 +13,11 @@ namespace CurrencyRates.Loader.MediatR.Commands
     /// <summary>
     /// Save data rates into db
     /// </summary>
-    public class StoreRates : TimedCurrencyRatesModel, IRequest
+    public class StoreRatesCommand : TimedCurrencyRatesModel, IRequest
     {
     }
 
-    public class StoreRatesCommandHandler : IRequestHandler<StoreRates>
+    public class StoreRatesCommandHandler : IRequestHandler<StoreRatesCommand>
     {
         private readonly ICurrencyDailyRepository _currencyDailyRepository;
         private readonly IProviderRepository _providerRepository;
@@ -31,7 +31,7 @@ namespace CurrencyRates.Loader.MediatR.Commands
         }
 
 
-        public async Task<Unit> Handle(StoreRates request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(StoreRatesCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Storing rates for daily begins {sourceName} with count {count}", request.SourceName, request.TimedRates.Count);
 

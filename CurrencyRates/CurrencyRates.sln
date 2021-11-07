@@ -30,11 +30,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{32724CA7-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRates.Core", "Core\CurrencyRates.Core\CurrencyRates.Core.csproj", "{1B428102-73D3-4286-A0B7-FB404014339F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRates.CzBAnk.ConnectorTests", "Tests\Services\CurrencyRates.CzBAnk.ConnectorTests\CurrencyRates.CzBAnk.ConnectorTests.csproj", "{A0DCAD28-35F9-41D9-AB5E-969BD619FC65}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRates.Logging", "Core\CurrencyRates.Logging\CurrencyRates.Logging.csproj", "{3EC17792-418F-4F14-BE9C-BBF202BD9C3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyRates.Loader.Tests", "Tests\Services\CurrencyRates.Loader.Tests\CurrencyRates.Loader.Tests.csproj", "{980BF3A0-FF03-4278-9364-42677AD44F94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRates.Loader.Tests", "Tests\Services\CurrencyRates.Loader.Tests\CurrencyRates.Loader.Tests.csproj", "{980BF3A0-FF03-4278-9364-42677AD44F94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyRates.CzBank.Connector.Tests", "Tests\Services\CurrencyRates.CzBank.Connector.Tests\CurrencyRates.CzBank.Connector.Tests.csproj", "{575DA0BE-13BE-49CF-A2DF-799C303E2443}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,10 +66,6 @@ Global
 		{1B428102-73D3-4286-A0B7-FB404014339F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B428102-73D3-4286-A0B7-FB404014339F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B428102-73D3-4286-A0B7-FB404014339F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A0DCAD28-35F9-41D9-AB5E-969BD619FC65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0DCAD28-35F9-41D9-AB5E-969BD619FC65}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0DCAD28-35F9-41D9-AB5E-969BD619FC65}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0DCAD28-35F9-41D9-AB5E-969BD619FC65}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3EC17792-418F-4F14-BE9C-BBF202BD9C3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3EC17792-418F-4F14-BE9C-BBF202BD9C3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EC17792-418F-4F14-BE9C-BBF202BD9C3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -78,6 +74,10 @@ Global
 		{980BF3A0-FF03-4278-9364-42677AD44F94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{980BF3A0-FF03-4278-9364-42677AD44F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{980BF3A0-FF03-4278-9364-42677AD44F94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{575DA0BE-13BE-49CF-A2DF-799C303E2443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{575DA0BE-13BE-49CF-A2DF-799C303E2443}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{575DA0BE-13BE-49CF-A2DF-799C303E2443}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{575DA0BE-13BE-49CF-A2DF-799C303E2443}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,9 +89,9 @@ Global
 		{2557B80D-A691-4B46-8917-6EBFFBF2D61A} = {250BC2EE-89C8-489B-ACEB-6739ED107B57}
 		{F0B98AD1-FC1B-4921-A664-9D0304CC7734} = {AAC537BD-08CC-4F63-829F-C390F355C58E}
 		{1B428102-73D3-4286-A0B7-FB404014339F} = {32724CA7-C85B-4148-9B53-DED12099AE8E}
-		{A0DCAD28-35F9-41D9-AB5E-969BD619FC65} = {2557B80D-A691-4B46-8917-6EBFFBF2D61A}
 		{3EC17792-418F-4F14-BE9C-BBF202BD9C3F} = {32724CA7-C85B-4148-9B53-DED12099AE8E}
 		{980BF3A0-FF03-4278-9364-42677AD44F94} = {2557B80D-A691-4B46-8917-6EBFFBF2D61A}
+		{575DA0BE-13BE-49CF-A2DF-799C303E2443} = {2557B80D-A691-4B46-8917-6EBFFBF2D61A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F6361CFB-CE64-44C2-98CA-B8378C5255FA}

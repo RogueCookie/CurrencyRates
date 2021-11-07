@@ -31,9 +31,6 @@ namespace CurrencyRates.Loader.DAL.Repositories
             {
                 _logger.LogError($"Error occurred during storing daily rates", ex);
             }
-            
-
-
         }
     }
 }

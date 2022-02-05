@@ -1,13 +1,14 @@
-﻿using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using CurrencyRates.Core.Enums;
+﻿using CurrencyRates.Core.Enums;
 using CurrencyRates.Core.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
+using System;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CurrencyRates.Scheduler.Api.MediatR.Commands
 {
@@ -33,35 +34,48 @@ namespace CurrencyRates.Scheduler.Api.MediatR.Commands
         /// <param name="cancellationToken">Token for stopping execution</param>
         public async Task<Unit> Handle(SendCommand request, CancellationToken cancellationToken)
         {
-            var message = JsonConvert.SerializeObject(request);
-            var messageBytes = Encoding.UTF8.GetBytes(message);
-
-            var factory = new ConnectionFactory
+            var transaction = Elastic.Apm.Agent.Config.Enabled
+                ? Elastic.Apm.Agent.Tracer.StartTransaction($"{nameof(SendCommandHandler)} - {request.Command}", "SendCommandHandler")
+                : null;
+            try
             {
-                HostName = _settingOptions.HostName,
-                UserName = _settingOptions.Login,
-                Password = _settingOptions.Password,
-                Port = _settingOptions.Port
-            };
+                var message = JsonConvert.SerializeObject(request);
+                var messageBytes = Encoding.UTF8.GetBytes(message);
 
-            using var connection = factory.CreateConnection(clientProvidedName: "Scheduler send command");
-            var channel = connection.CreateModel();
-            channel.ExchangeDeclare(exchange: Exchanges.Scheduler.ToString(), type: ExchangeType.Direct);
+                var factory = new ConnectionFactory
+                {
+                    HostName = _settingOptions.HostName,
+                    UserName = _settingOptions.Login,
+                    Password = _settingOptions.Password,
+                    Port = _settingOptions.Port
+                };
 
-            var properties = channel.CreateBasicProperties();
-            properties.CorrelationId = request.CorrelationId;
+                using var connection = factory.CreateConnection(clientProvidedName: "Scheduler send command");
+                var channel = connection.CreateModel();
+                channel.ExchangeDeclare(exchange: Exchanges.Scheduler.ToString(), type: ExchangeType.Direct);
 
-            _logger.LogInformation($"Data send to Scheduler {message}", request.CorrelationId);
+                var properties = channel.CreateBasicProperties();
+                properties.CorrelationId = request.CorrelationId;
 
-            channel.BasicPublish(
-                exchange: Exchanges.Scheduler.ToString(),
-                routingKey: request.RoutingKey,
-                basicProperties: properties,
-                body: messageBytes);
+                _logger.LogInformation($"Data send to Scheduler {message}", request.CorrelationId);
 
-            channel.Close();
-            connection.Close();
+                channel.BasicPublish(
+                    exchange: Exchanges.Scheduler.ToString(),
+                    routingKey: request.RoutingKey,
+                    basicProperties: properties,
+                    body: messageBytes);
 
+                channel.Close();
+                connection.Close();
+            }
+            catch (Exception e)
+            {
+                transaction?.CaptureException(e);
+            }
+            finally
+            {
+                transaction?.End();
+            }
             return await Unit.Task;
         }
     }

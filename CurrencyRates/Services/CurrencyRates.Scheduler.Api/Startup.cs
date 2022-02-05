@@ -16,6 +16,8 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
+using Elastic.Apm.AspNetCore;
+using Elastic.Apm.NetCoreAll;
 
 namespace CurrencyRates.Scheduler.Api
 {
@@ -50,6 +52,8 @@ namespace CurrencyRates.Scheduler.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger, IBackgroundJobClient backgroundJobClient)
         {
+            app.UseAllElasticApm(_configuration);
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

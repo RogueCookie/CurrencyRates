@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using Elastic.Apm.NetCoreAll;
 
 namespace CurrencyRates.Report.Api
 {
@@ -31,6 +32,8 @@ namespace CurrencyRates.Report.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            app.UseAllElasticApm(_configuration);
+
             app.RegisterSwaggerUi();
 
             app.UseHttpsRedirection();

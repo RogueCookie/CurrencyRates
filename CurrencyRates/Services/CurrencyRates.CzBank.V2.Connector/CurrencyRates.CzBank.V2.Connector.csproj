@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\Rss.proto" />
+    <None Remove="Protos\rss.proto" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Protos\rss.proto" />
+    <Protobuf Include="Protos\rss.proto" GrpcServices="Server" Access="Public" />
   </ItemGroup>
 
   <ItemGroup>

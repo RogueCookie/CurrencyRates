@@ -1,10 +1,9 @@
 ﻿syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/wrappers.proto";
 
 
-option csharp_namespace = "CurrencyRates.CzBank.Connector";
+option csharp_namespace = "CurrencyRates.CzBank.Grpc.Rss";
 
 package rss;
 
@@ -15,7 +14,7 @@ service RssService {
 message GetInfoRequest { }
 
 message GetInfoResponse {
-    repeated RssData rssData = 1;
+    repeated RssData items = 1;
    
 }
 message RssData {

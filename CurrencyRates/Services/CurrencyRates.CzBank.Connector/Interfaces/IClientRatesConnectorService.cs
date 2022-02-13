@@ -6,9 +6,9 @@ using CurrencyRates.Core.Models;
 namespace CurrencyRates.CzBank.Connector.Interfaces
 {
     /// <summary>
-    /// Get data from the Czech bank
+    /// Get rates data from the Czech bank
     /// </summary>
-    public interface IClientConnectorService
+    public interface IClientRatesConnectorService
     {
         /// <summary>
         /// Download currency rates from particular source on current date

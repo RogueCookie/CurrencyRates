@@ -1,4 +1,4 @@
-﻿namespace CurrencyRates.CzBank.Connector.Constants
+﻿namespace CurrencyRates.CzBank.V2.Connector.Constants
 {
     /// <summary>
     /// Constants used in CzBankConnector

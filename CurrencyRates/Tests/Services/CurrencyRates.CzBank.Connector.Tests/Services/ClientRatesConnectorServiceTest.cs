@@ -1,12 +1,12 @@
-using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
-namespace CurrencyRates.CzBank.Connector.Tests
+namespace CurrencyRates.CzBank.Connector.Tests.Services
 {
-    public class ClientConnectorServiceTest
+    public class ClientRatesConnectorServiceTest
     {
         [Test]
         public async Task DownloadDailyRates_ModelWithListOfRatesExpected()

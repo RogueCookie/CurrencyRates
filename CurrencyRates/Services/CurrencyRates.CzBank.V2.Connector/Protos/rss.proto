@@ -1,0 +1,26 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+
+option csharp_namespace = "CurrencyRates.CzBank.Connector";
+
+package rss;
+
+service RssService {
+    rpc Download(GetInfoRequest) returns (GetInfoResponse);
+}
+
+message GetInfoRequest { }
+
+message GetInfoResponse {
+    repeated RssData rssData = 1;
+   
+}
+message RssData {
+    optional string title = 1;
+    optional string shortDescription = 2;
+    optional string linkForFullDescription = 3;
+    optional google.protobuf.Timestamp publishDate = 4;
+}

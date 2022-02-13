@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CurrencyRates.Core.Enums;
 using CurrencyRates.Core.Models;
-using CurrencyRates.CzBank.Connector.Interfaces;
+using CurrencyRates.CzBank.V2.Connector.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace CurrencyRates.CzBank.Connector.Services
+namespace CurrencyRates.CzBank.V2.Connector.Services
 {
     /// <summary>
     /// Service for handling all messages from RabbitMq

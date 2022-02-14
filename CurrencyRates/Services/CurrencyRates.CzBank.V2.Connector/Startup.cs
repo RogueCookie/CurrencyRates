@@ -16,6 +16,8 @@ using System.Net.Http;
 using CurrencyRates.CzBank.V2.Connector.Interfaces;
 using CurrencyRates.CzBank.V2.Connector.Services;
 using CurrencyRates.Logging;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace CurrencyRates.CzBank.V2.Connector
 {
@@ -31,8 +33,6 @@ namespace CurrencyRates.CzBank.V2.Connector
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-
             services.AddHttpClient(Constants.GeneralConstants.BaseCzBankUri, client =>
             {
                 client.BaseAddress = new Uri("https://www.cnb.cz");
@@ -45,9 +45,21 @@ namespace CurrencyRates.CzBank.V2.Connector
             services.AddTransient<IDataCommandSender, DataCommandSender>();
             services.AddHostedService<RabbitCommandHandlerService>();
 
-            services.AddSwaggerGen(c =>
+
+            services.AddGrpc();
+            services.AddGrpcReflection();
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy());
+
+            services.AddCors(o =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CurrencyRates.CzBank.V2.Connector", Version = "v1" });
+                o.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+                });
             });
         }
 
@@ -57,19 +69,26 @@ namespace CurrencyRates.CzBank.V2.Connector
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CurrencyRates.CzBank.V2.Connector v1"));
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseGrpcWeb();
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints
+                    .MapGrpcService<ClientNewsConnectorService>()
+                    .RequireCors("AllowAll");
+
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+                });
+                endpoints.MapGrpcReflectionService();
+
+                
             });
         }
 

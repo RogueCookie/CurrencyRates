@@ -9,7 +9,7 @@ namespace CurrencyRates.CzBank.Connector.Tests
 {
     public class HttpClientHelpers
     {
-        public static IClientConnectorService CreateClintConnectorService()
+        public static IClientRatesConnectorService CreateClintConnectorService()
         {
             var mockHttpFactory = new Mock<IHttpClientFactory>();
             var client = new HttpClient()
@@ -18,7 +18,7 @@ namespace CurrencyRates.CzBank.Connector.Tests
             };
             mockHttpFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(client);
 
-            return new ClientConnectorService(mockHttpFactory.Object, new NullLogger<ClientConnectorService>());
+            return new ClientRatesRatesConnectorService(mockHttpFactory.Object, new NullLogger<ClientRatesRatesConnectorService>());
         }
     }
 }

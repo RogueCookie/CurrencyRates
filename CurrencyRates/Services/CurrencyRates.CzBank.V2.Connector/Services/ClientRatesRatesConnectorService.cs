@@ -10,28 +10,26 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using CurrencyRates.Core.Enums;
 using CurrencyRates.Core.Models;
-using CurrencyRates.CzBank.Connector.Constants;
-using CurrencyRates.CzBank.Connector.Extensions;
-using CurrencyRates.CzBank.Connector.Interfaces;
-using CurrencyRates.CzBank.Connector.Models;
+using CurrencyRates.CzBank.V2.Connector.Extensions;
+using CurrencyRates.CzBank.V2.Connector.Interfaces;
+using CurrencyRates.CzBank.V2.Connector.Models;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using DailyRates = CurrencyRates.CzBank.Connector.Models.DailyRates;
+using DailyRates = CurrencyRates.CzBank.V2.Connector.Models.DailyRates;
 
-namespace CurrencyRates.CzBank.Connector.Services
+namespace CurrencyRates.CzBank.V2.Connector.Services
 {
     /// <summary>
     /// Services for getting data from the client (Currency rates from Czech Bank)
     /// </summary>
-    public class ClientConnectorService : IClientConnectorService
+    public class ClientRatesRatesConnectorService : IClientRatesConnectorService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger<ClientConnectorService> _logger;
+        private readonly ILogger<ClientRatesRatesConnectorService> _logger;
 
-        public ClientConnectorService(IHttpClientFactory httpClientFactory, ILogger<ClientConnectorService> logger)
+        public ClientRatesRatesConnectorService(IHttpClientFactory httpClientFactory, ILogger<ClientRatesRatesConnectorService> logger)
         {
             // take free client from the factory
-            _httpClient = httpClientFactory.CreateClient(Constants.GeneralConstants.Daily);
+            _httpClient = httpClientFactory.CreateClient(Constants.GeneralConstants.BaseCzBankUri);
             _logger = logger;
         }
 

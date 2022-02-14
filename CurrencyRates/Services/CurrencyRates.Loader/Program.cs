@@ -65,7 +65,6 @@ namespace CurrencyRates.Loader
                         container.Populate(services);
                     });
                 });
-
         }
 
     }

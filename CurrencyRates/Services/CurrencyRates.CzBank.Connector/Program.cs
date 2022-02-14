@@ -30,16 +30,16 @@ namespace CurrencyRates.CzBank.Connector
                 services.Configure<AddNewJobModel>(_configuration.GetSection("RegisterSettings"));
 
                 services.AddHostedService<JobRegistrationService>();
-                services.AddTransient<IClientConnectorService, ClientConnectorService>();
+                services.AddTransient<IClientRatesConnectorService, ClientRatesRatesConnectorService>();
                 services.AddTransient<IDataCommandSender, DataCommandSender>();
                 services.AddHostedService<RabbitCommandHandlerService>();
 
-                services.AddHttpClient(Constants.GeneralConstants.Daily, client =>
+                services.AddHttpClient(Constants.GeneralConstants.BaseCzBankUri, client =>
                 {
                     client.BaseAddress = new Uri("https://www.cnb.cz");
                 }).AddPolicyHandler(GetRetryPolicy());
-                
-                services.AddSerilogLogging(_configuration);
+
+                //services.AddSerilogLogging(_configuration);
             },
                 (services) =>
                 {

@@ -27,6 +27,10 @@ services:
       - RabbitSettings__Port
       - RabbitSettings__Login
       - RabbitSettings__Password
+      - Kestrel__Endpoints__http__Url
+      - Kestrel__Endpoints__http__Protocols
+      - Kestrel__Endpoints__grpc__Url
+      - Kestrel__Endpoints__grpc__Protocols
 
   cr_rabbitmq:
     environment:

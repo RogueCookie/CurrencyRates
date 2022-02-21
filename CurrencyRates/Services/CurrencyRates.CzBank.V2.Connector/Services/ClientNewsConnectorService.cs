@@ -1,29 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Net.Http;
 using System.ServiceModel.Syndication;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using CurrencyRates.CzBank.Grpc.Rss;
-using CurrencyRates.CzBank.V2.Connector.Models;
-using Google.Protobuf.Collections;
+using CurrencyRates.CzBank.V2.Connector.Constants;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace CurrencyRates.CzBank.V2.Connector.Services
 {
     public class ClientNewsConnectorService : Grpc.Rss.RssService.RssServiceBase
     {
-        public ClientNewsConnectorService()
+        private readonly HttpClient _httpClient;
+
+        public ClientNewsConnectorService(IHttpClientFactory clientFactory)
         {
-                
+            _httpClient = clientFactory.CreateClient(GeneralConstants.BaseCzBankUri);
         }
 
-        public override Task<GetInfoResponse> Download(GetInfoRequest request, ServerCallContext context)
+        public override async Task<GetInfoResponse> Download(GetInfoRequest request, ServerCallContext context)
         {
-            string url = "https://www.cnb.cz/en/.content/rss-feed/rss-feed_tz.xml";//TODO url binding
-            var reader = XmlReader.Create(url);
+            using var streamResponse = await _httpClient.GetStreamAsync(GeneralConstants.AdditionalUrlNews, context.CancellationToken);
+            
+            using var reader = XmlReader.Create(streamResponse);
             var feed = SyndicationFeed.Load(reader);
             reader.Close();
 
@@ -38,7 +39,30 @@ namespace CurrencyRates.CzBank.V2.Connector.Services
             var response = new GetInfoResponse();
             response.Items.AddRange(news);
 
-            return Task.FromResult(response);
+            return response;
         }
+
+
+
+        //    public override Task<GetInfoResponse> Download(GetInfoRequest request, ServerCallContext context)
+        //    {
+        //        using var reader = XmlReader.Create(_newsAddress);
+        //        var feed = SyndicationFeed.Load(reader);
+        //        reader.Close();
+
+        //        var news = feed.Items.Select(x => new RssData()
+        //        {
+        //            Title = x.Title.Text,
+        //            LinkForFullDescription = x.Id,
+        //            PublishDate = Timestamp.FromDateTimeOffset(x.PublishDate),
+        //            ShortDescription = x.Summary.Text
+        //        });
+
+        //        var response = new GetInfoResponse();
+        //        response.Items.AddRange(news);
+
+        //        return Task.FromResult(response);
+        //    }
+        //}
     }
 }

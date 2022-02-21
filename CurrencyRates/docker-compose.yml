@@ -42,13 +42,28 @@ services:
       - elasticsearch
       - cr_postgres
 
+  cr_elastic:
+    image: ${DOCKER_REGISTRY}/cr_elastic:${TAG}
+    build:
+      context: .
+      dockerfile: Services/CurrencyRates.CzBank.Elastic/Dockerfile 
+    networks:
+      - cr
+    ports:
+      - 88:80
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+
   cr_czbank_connector:
     image: ${DOCKER_REGISTRY}/cr_czbank_connector:${TAG}
     build:
       context: .
-      dockerfile: Services/CurrencyRates.CzBank.Connector/Dockerfile
+      dockerfile: Services/CurrencyRates.CzBank.V2.Connector/Dockerfile 
     networks:
       - cr
+    ports:
+      - 5004:5004  
     restart: on-failure
     depends_on:
       - cr_scheduler

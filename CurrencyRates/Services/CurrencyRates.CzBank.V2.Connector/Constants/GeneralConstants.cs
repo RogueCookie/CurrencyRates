@@ -29,5 +29,11 @@
         /// Version of service
         /// </summary>
         public const string Version = "1.0";
+
+
+        /// <summary>
+        /// Url for downloads news
+        /// </summary>
+        public const string AdditionalUrlNews = "en/.content/rss-feed/rss-feed_tz.xml";
     }
 }

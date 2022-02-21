@@ -1,15 +1,1 @@
-﻿syntax = "proto3";
-
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/wrappers.proto";
-
-
-option csharp_namespace = "CurrencyRates.CzBank.Connector";
-
-package rss;
-
-service RssService {
-    rpc GetInfo(GetInfoRequest) returns (GetInfoResponse);
-    rpc Update(CustomerUpdateRequest) returns (CustomerUpdateResponse);
-    rpc Events(EventsRequest) returns (EventsResponse);
-}
+﻿
